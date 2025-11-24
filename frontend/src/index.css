@@ -2,11 +2,4138 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme Switching Optimization - Ultra fast transitions */
+:root {
+  /* Use GPU-accelerated properties only */
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Fast transitions for theme changes */
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Optimize theme-dependent elements */
+.card,
+.metric-card,
+.input-field,
+.btn-primary,
+.btn-secondary {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+/* Enhanced Design System - Medical Dashboard Style */
+
+/* Variables CSS para tema claro (por defecto) */
+:root {
+  /* Core Colors */
+  --primary: #0f172a;     /* Azul muy oscuro para texto */
+  --secondary: #1e3a8a;   /* Azul médico clásico */
+  --accent: #06b6d4;      /* Cian claro para acentos */
+  --background: #FAF8F3;  /* Color hueso - Fondo suave y elegante */
+  --white: #ffffff;       /* Blanco puro */
+  
+  /* Gray Scale */
+  --gray-50: #f8fafc;     /* Gris muy claro */
+  --gray-100: #f1f5f9;    /* Gris claro */
+  --gray-200: #e2e8f0;    /* Gris claro medio */
+  --gray-300: #cbd5e1;    /* Gris medio */
+  --gray-400: #94a3b8;    /* Gris medio oscuro */
+  --gray-500: #64748b;    /* Gris oscuro */
+  --gray-600: #475569;    /* Gris muy oscuro */
+  --gray-700: #334155;    /* Gris casi negro */
+  --gray-800: #1e293b;    /* Gris negro */
+  --gray-900: #0f172a;    /* Negro azulado */
+  
+  /* Medical Risk Colors */
+  --risk-high: #dc2626;
+  --risk-high-bg: rgba(220, 38, 38, 0.1);
+  --risk-high-border: rgba(220, 38, 38, 0.2);
+  --risk-medium: #f59e0b;
+  --risk-medium-bg: rgba(245, 158, 11, 0.1);
+  --risk-medium-border: rgba(245, 158, 11, 0.2);
+  --risk-low: #059669;
+  --risk-low-bg: rgba(5, 150, 105, 0.1);
+  --risk-low-border: rgba(5, 150, 105, 0.2);
+  
+  /* Status Colors */
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.1);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.1);
+  --error: #ef4444;
+  --error-bg: rgba(239, 68, 68, 0.1);
+  --info: #3b82f6;
+  --info-bg: rgba(59, 130, 246, 0.1);
+  
+  /* Design Tokens */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Variables CSS para tema oscuro - Medical Dashboard Style */
+:root[data-theme='dark'] {
+  /* Core Colors - Dashboard Style */
+  --primary: #f1f5f9;     /* Texto claro principal */
+  --secondary: #60a5fa;   /* Azul brillante para destacar */
+  --accent: #06b6d4;      /* Cian para acentos */
+  --background: #0c1220;  /* Fondo principal muy oscuro (como el dashboard) */
+  --white: #1e293b;       /* Cards y superficies */
+  
+  /* Gray Scale - Dark Theme */
+  --gray-50: #1e293b;     /* Fondo de cards */
+  --gray-100: #334155;    /* Superficies elevadas */
+  --gray-200: #475569;    /* Bordes suaves */
+  --gray-300: #64748b;    /* Bordes normales */
+  --gray-400: #94a3b8;    /* Texto secundario */
+  --gray-500: #cbd5e1;    /* Texto normal */
+  --gray-600: #e2e8f0;    /* Texto principal */
+  --gray-700: #f1f5f9;    /* Texto destacado */
+  --gray-800: #f8fafc;    /* Texto muy destacado */
+  --gray-900: #ffffff;    /* Texto máximo contraste */
+  
+  /* Medical Risk Colors - Dark Theme */
+  --risk-high: #f87171;
+  --risk-high-bg: rgba(248, 113, 113, 0.15);
+  --risk-high-border: rgba(248, 113, 113, 0.3);
+  --risk-medium: #fbbf24;
+  --risk-medium-bg: rgba(251, 191, 36, 0.15);
+  --risk-medium-border: rgba(251, 191, 36, 0.3);
+  --risk-low: #34d399;
+  --risk-low-bg: rgba(52, 211, 153, 0.15);
+  --risk-low-border: rgba(52, 211, 153, 0.3);
+  
+  /* Status Colors - Dark Theme */
+  --success: #34d399;
+  --success-bg: rgba(52, 211, 153, 0.15);
+  --warning: #fbbf24;
+  --warning-bg: rgba(251, 191, 36, 0.15);
+  --error: #f87171;
+  --error-bg: rgba(248, 113, 113, 0.15);
+  --info: #60a5fa;
+  --info-bg: rgba(96, 165, 250, 0.15);
+  
+  /* Shadows - Dark Theme */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.7);
+  
+  /* Form-specific variables for Dark Mode */
+  --form-label-color: #f1f5f9;        /* Texto claro para labels - contraste 4.5:1 */
+  --form-input-bg: #1e293b;           /* Fondo de inputs */
+  --form-input-text: #f8fafc;         /* Texto de inputs - contraste 4.5:1 */
+  --form-input-border: #475569;       /* Borde normal */
+  --form-input-border-focus: #60a5fa; /* Borde en focus */
+  --form-input-border-error: #f87171; /* Borde en error */
+  --form-placeholder: #94a3b8;        /* Color de placeholders */
+}
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    /* Fast theme transitions */
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--primary);
+    /* Fast theme transitions */
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+}
+
+@layer components {
+  /* Enhanced Button System */
+  .btn-primary {
+    background: var(--secondary);
+    color: white;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: var(--radius-lg);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    will-change: background-color, box-shadow, transform;
+  }
+  
+  .btn-primary:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .btn-secondary {
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: var(--radius-lg);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    will-change: background-color, box-shadow, transform;
+  }
+  
+  .btn-secondary:hover {
+    background: rgba(6, 182, 212, 0.8);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  /* Enhanced Input Fields */
+  .input-field {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--white);
+    color: var(--primary);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    will-change: border-color, box-shadow;
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+  }
+  
+  /* Enhanced Card System - Dashboard Style */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-md);
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    contain: layout style paint;
+    will-change: background-color, border-color, box-shadow;
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--accent);
+  }
+  
+  /* Medical Dashboard Cards */
+  .metric-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-md);
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    contain: layout style paint;
+    will-change: background-color, border-color, box-shadow;
+  }
+  
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--secondary));
+  }
+  
+  .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  /* Risk Level Cards */
+  .risk-card-high {
+    background: var(--risk-high-bg);
+    border: 2px solid var(--risk-high-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+  }
+  
+  .risk-card-medium {
+    background: var(--risk-medium-bg);
+    border: 2px solid var(--risk-medium-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+  }
+  
+  .risk-card-low {
+    background: var(--risk-low-bg);
+    border: 2px solid var(--risk-low-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+  }
+  
+  /* Enhanced Typography */
+  .text-metric {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--primary);
+  }
+  
+  .text-metric-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .text-section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: var(--space-md);
+  }
+  
+  /* Progress Bars - Dashboard Style */
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--secondary));
+    border-radius: var(--radius-full);
+    transition: width 1s ease-out;
+    position: relative;
+  }
+  
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  
+  /* Status Badges */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .status-badge-success {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid var(--success);
+  }
+  
+  .status-badge-warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+  }
+  
+  .status-badge-error {
+    background: var(--error-bg);
+    color: var(--error);
+    border: 1px solid var(--error);
+  }
+  
+  .status-badge-info {
+    background: var(--info-bg);
+    color: var(--info);
+    border: 1px solid var(--info);
+  }
+  
+  /* Dark Mode Enhancements - Dashboard Style */
+  :root[data-theme='dark'] .card {
+    background: var(--white);
+    border-color: var(--gray-200);
+    box-shadow: var(--shadow-md);
+  }
+  
+  :root[data-theme='dark'] .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--accent);
+  }
+  
+  :root[data-theme='dark'] .metric-card {
+    background: var(--white);
+    border-color: var(--gray-200);
+    box-shadow: var(--shadow-md);
+  }
+  
+  :root[data-theme='dark'] .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  :root[data-theme='dark'] .input-field {
+    background: var(--white);
+    border-color: var(--gray-300);
+    color: var(--primary);
+  }
+  
+  :root[data-theme='dark'] .input-field:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+  }
+  
+  :root[data-theme='dark'] .progress-bar {
+    background: var(--gray-200);
+  }
+  
+  :root[data-theme='dark'] .text-metric {
+    color: #ffffff !important;
+  }
+  
+  :root[data-theme='dark'] .text-metric-label {
+    color: #d1d5db !important;
+  }
+  
+  :root[data-theme='dark'] .text-section-title {
+    color: #ffffff !important;
+  }
+  
+  /* Navbar específico para modo oscuro - Dashboard Style */
+  :root[data-theme='dark'] nav {
+    background-color: var(--background) !important;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  :root[data-theme='dark'] nav .text-primary {
+    color: var(--primary) !important;
+  }
+  
+  :root[data-theme='dark'] nav .text-gray-600 {
+    color: var(--gray-400) !important;
+  }
+  
+  :root[data-theme='dark'] nav .text-gray-500 {
+    color: var(--gray-400) !important;
+  }
+  
+  :root[data-theme='dark'] nav .hover\\:bg-gray-50:hover {
+    background-color: var(--gray-100) !important;
+  }
+  
+  /* Button hover effects for dark mode */
+  :root[data-theme='dark'] button:hover {
+    background-color: var(--gray-100) !important;
+  }
+  
+  /* Enhanced Dark Mode Utilities - Dashboard Style */
+  
+  /* Background Gradients */
+  :root[data-theme='dark'] .from-green-50 {
+    background: linear-gradient(to right, var(--success-bg), rgba(52, 211, 153, 0.25)) !important;
+  }
+  
+  :root[data-theme='dark'] .from-blue-50 {
+    background: linear-gradient(to right, var(--info-bg), rgba(96, 165, 250, 0.25)) !important;
+  }
+  
+  :root[data-theme='dark'] .from-purple-50 {
+    background: linear-gradient(to right, rgba(147, 51, 234, 0.15), rgba(147, 51, 234, 0.25)) !important;
+  }
+  
+  :root[data-theme='dark'] .from-orange-50 {
+    background: linear-gradient(to right, rgba(249, 115, 22, 0.15), rgba(249, 115, 22, 0.25)) !important;
+  }
+  
+  :root[data-theme='dark'] .from-yellow-50 {
+    background: linear-gradient(to right, var(--warning-bg), rgba(251, 191, 36, 0.25)) !important;
+  }
+  
+  :root[data-theme='dark'] .from-red-50 {
+    background: linear-gradient(to right, var(--error-bg), rgba(248, 113, 113, 0.25)) !important;
+  }
+  
+  :root[data-theme='dark'] .from-cyan-50 {
+    background: linear-gradient(to right, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.25)) !important;
+  }
+  
+  :root[data-theme='dark'] .from-teal-50 {
+    background: linear-gradient(to right, rgba(20, 184, 166, 0.15), rgba(20, 184, 166, 0.25)) !important;
+  }
+  
+  :root[data-theme='dark'] .from-indigo-50 {
+    background: linear-gradient(to right, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.25)) !important;
+  }
+  
+  /* Background Colors */
+  :root[data-theme='dark'] .bg-green-50 {
+    background-color: var(--success-bg) !important;
+  }
+  
+  :root[data-theme='dark'] .bg-yellow-50 {
+    background-color: var(--warning-bg) !important;
+  }
+  
+  :root[data-theme='dark'] .bg-red-50 {
+    background-color: var(--error-bg) !important;
+  }
+  
+  :root[data-theme='dark'] .bg-blue-200 {
+    background-color: var(--info-bg) !important;
+  }
+  
+  :root[data-theme='dark'] .bg-green-200 {
+    background-color: var(--success-bg) !important;
+  }
+  
+  :root[data-theme='dark'] .bg-purple-200 {
+    background-color: rgba(147, 51, 234, 0.2) !important;
+  }
+  
+  :root[data-theme='dark'] .bg-gray-50 {
+    background-color: var(--gray-50) !important;
+  }
+  
+  :root[data-theme='dark'] .bg-gray-100 {
+    background-color: var(--gray-100) !important;
+  }
+  
+  :root[data-theme='dark'] .bg-white\/50 {
+    background-color: rgba(30, 41, 59, 0.5) !important;
+  }
+  
+  :root[data-theme='dark'] .bg-white\/20 {
+    background-color: rgba(30, 41, 59, 0.3) !important;
+  }
+  
+  /* Border Colors */
+  :root[data-theme='dark'] .border-red-200 {
+    border-color: var(--error-bg) !important;
+  }
+  
+  :root[data-theme='dark'] .border-green-200 {
+    border-color: var(--success-bg) !important;
+  }
+  
+  :root[data-theme='dark'] .border-yellow-200 {
+    border-color: var(--warning-bg) !important;
+  }
+  
+  :root[data-theme='dark'] .border-blue-200 {
+    border-color: var(--info-bg) !important;
+  }
+  
+  :root[data-theme='dark'] .border-purple-200,
+  :root[data-theme='dark'] .border-orange-200,
+  :root[data-theme='dark'] .border-indigo-200 {
+    border-color: var(--gray-300) !important;
+  }
+  
+  :root[data-theme='dark'] .border-white\/30 {
+    border-color: var(--gray-200) !important;
+  }
+  
+
+}
+/* Enhan
+ced Animations - Medical Dashboard Style */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes countUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Animation Classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.4s ease-out;
+}
+
+.animate-pulse-soft {
+  animation: pulse 2s infinite;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.animate-count-up {
+  animation: countUp 0.8s ease-out;
+}
+
+/* Staggered Animation Delays */
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animate-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animate-delay-500 {
+  animation-delay: 0.5s;
+}
+
+/* Medical Dashboard Specific Components */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+}
+
+/* Enhanced Hover Effects */
+.hover-lift {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+}
+
+/* Medical Status Indicators */
+.status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-indicator-online {
+  background: var(--success);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  animation: pulse 2s infinite;
+}
+
+.status-indicator-warning {
+  background: var(--warning);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+.status-indicator-error {
+  background: var(--error);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+/* Glassmorphism Effects */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+:root[data-theme='dark'] .glass-card {
+  background: rgba(30, 41, 59, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Medical Chart Styles */
+.chart-container {
+  position: relative;
+  height: 200px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  border: 1px solid var(--gray-200);
+}
+
+.chart-legend {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.75rem;
+  color: var(--gray-600);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* Enhanced Responsive Utilities for Mobile */
+@media (max-width: 768px) {
+  /* Reducir espaciado general */
+  :root {
+    --space-xs: 3px;
+    --space-sm: 6px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 20px;
+    --space-2xl: 28px;
+    --space-3xl: 36px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+  
+  .metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+  
+  .metric-card {
+    padding: var(--space-md);
+  }
+  
+  .text-metric {
+    font-size: 1.75rem;
+  }
+
+  .text-section-title {
+    font-size: 1.25rem;
+  }
+
+  /* Ajustar cards para móvil */
+  .card {
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+  }
+
+  /* Botones más compactos */
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  /* Input fields más compactos */
+  .input-field {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Espaciado aún más reducido para móviles pequeños */
+  :root {
+    --space-xs: 2px;
+    --space-sm: 4px;
+    --space-md: 8px;
+    --space-lg: 12px;
+    --space-xl: 16px;
+    --space-2xl: 20px;
+    --space-3xl: 24px;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .text-metric {
+    font-size: 1.5rem;
+  }
+
+  .text-section-title {
+    font-size: 1.125rem;
+  }
+
+  .text-metric-label {
+    font-size: 0.75rem;
+  }
+
+  /* Cards ultra compactos */
+  .card,
+  .metric-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  /* Botones más pequeños */
+  .btn-primary,
+  .btn-secondary {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  /* Reducir tamaño de iconos */
+  svg {
+    max-width: 20px;
+    max-height: 20px;
+  }
+}
+
+/* Mobile Performance Optimizations */
+@media (max-width: 768px) {
+  html, body {
+    transition-duration: 0.2s;
+  }
+  
+  .btn-primary, .btn-secondary, .card, .metric-card, .input-field {
+    transition-duration: 0.2s;
+  }
+  
+  button, a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus Styles */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.3);
+  border-radius: var(--radius-md);
+}
+
+:root[data-theme='dark'] .focus-ring:focus {
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.4);
+}
+
+/* Loading States */
+.skeleton {
+  background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+:root[data-theme='dark'] .skeleton {
+  background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+}/*
+ Enhanced Probability Animation Styles */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes progressPulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes numberCount {
+  0% {
+    transform: translateY(20px) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-5px) scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes circularFill {
+  0% {
+    stroke-dashoffset: 628; /* Full circle circumference for radius ~100 */
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px currentColor);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px currentColor);
+  }
+}
+
+/* Animation Classes for Probability Components */
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.animate-progress-pulse {
+  animation: progressPulse 2s ease-in-out infinite;
+}
+
+.animate-number-count {
+  animation: numberCount 0.8s ease-out;
+}
+
+.animate-circular-fill {
+  animation: circularFill 1.5s ease-out;
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Staggered Animations for Multiple Elements */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+/* Enhanced Hover Effects for Interactive Elements */
+.interactive-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+:root[data-theme='dark'] .interactive-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Probability Ring Animations */
+.probability-ring {
+  transform-origin: center;
+  transition: all 0.3s ease;
+}
+
+.probability-ring:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Medical Status Indicators with Pulse */
+.medical-status-pulse {
+  position: relative;
+}
+
+.medical-status-pulse::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: inherit;
+  background: inherit;
+  opacity: 0.3;
+  animation: pulse 2s infinite;
+}
+
+/* Enhanced Focus States for Accessibility */
+.enhanced-focus:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 2px var(--white),
+    0 0 0 4px var(--accent),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+:root[data-theme='dark'] .enhanced-focus:focus {
+  box-shadow: 
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--accent),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Smooth Transitions for Theme Changes */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-duration: 0.3s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Performance Optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Medical Dashboard Specific Animations */
+.dashboard-metric-enter {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.dashboard-metric-enter:nth-child(1) { animation-delay: 0.1s; }
+.dashboard-metric-enter:nth-child(2) { animation-delay: 0.2s; }
+.dashboard-metric-enter:nth-child(3) { animation-delay: 0.3s; }
+.dashboard-metric-enter:nth-child(4) { animation-delay: 0.4s; }
+
+/* Loading State Animations */
+.loading-pulse {
+  background: linear-gradient(
+    90deg,
+    var(--gray-200) 25%,
+    var(--gray-100) 50%,
+    var(--gray-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Micro-interactions */
+.micro-bounce:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+.micro-lift:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+/* Medical Color Animations */
+.risk-indicator {
+  position: relative;
+  overflow: hidden;
+}
+
+.risk-indicator::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.risk-indicator:hover::after {
+  left: 100%;
+}/* 
+Enhanced Dark Mode Variables - Medical Dashboard Specific */
+:root[data-theme='dark'] {
+  /* Medical Dashboard Background Hierarchy */
+  --dashboard-bg-primary: #0c1220;    /* Main background (like the reference) */
+  --dashboard-bg-secondary: #1a2332;  /* Card backgrounds */
+  --dashboard-bg-tertiary: #243447;   /* Elevated surfaces */
+  --dashboard-bg-quaternary: #2d4059; /* Interactive elements */
+  
+  /* Medical Text Hierarchy for Dark Mode */
+  --text-primary-dark: #f8fafc;       /* Primary text - highest contrast */
+  --text-secondary-dark: #e2e8f0;     /* Secondary text */
+  --text-tertiary-dark: #cbd5e1;      /* Tertiary text */
+  --text-quaternary-dark: #94a3b8;    /* Muted text */
+  --text-disabled-dark: #64748b;      /* Disabled text */
+  
+  /* Medical Accent Colors for Dark Mode */
+  --accent-primary-dark: #60a5fa;     /* Primary blue accent */
+  --accent-secondary-dark: #34d399;   /* Success green */
+  --accent-warning-dark: #fbbf24;     /* Warning yellow */
+  --accent-danger-dark: #f87171;      /* Danger red */
+  --accent-info-dark: #a78bfa;        /* Info purple */
+  
+  /* Medical Border Colors for Dark Mode */
+  --border-primary-dark: #334155;     /* Primary borders */
+  --border-secondary-dark: #475569;   /* Secondary borders */
+  --border-accent-dark: #60a5fa;      /* Accent borders */
+  
+  /* Medical Shadow System for Dark Mode */
+  --shadow-sm-dark: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md-dark: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --shadow-lg-dark: 0 10px 15px rgba(0, 0, 0, 0.6);
+  --shadow-xl-dark: 0 20px 25px rgba(0, 0, 0, 0.7);
+  --shadow-glow-dark: 0 0 20px rgba(96, 165, 250, 0.3);
+  
+  /* Override main variables for consistency */
+  --background: var(--dashboard-bg-primary);
+  --white: var(--dashboard-bg-secondary);
+  --gray-50: var(--dashboard-bg-secondary);
+  --gray-100: var(--dashboard-bg-tertiary);
+  --primary: var(--text-primary-dark);
+  --secondary: var(--accent-primary-dark);
+}
+
+/* Enhanced Dark Mode Component Styles */
+:root[data-theme='dark'] {
+  /* Dashboard Cards */
+  .metric-card {
+    background: var(--dashboard-bg-secondary);
+    border-color: var(--border-primary-dark);
+    box-shadow: var(--shadow-md-dark);
+  }
+  
+  .metric-card:hover {
+    background: var(--dashboard-bg-tertiary);
+    border-color: var(--accent-primary-dark);
+    box-shadow: var(--shadow-xl-dark);
+  }
+  
+  /* Glass Cards */
+  .glass-card {
+    background: rgba(26, 35, 50, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-primary-dark);
+  }
+  
+  /* Interactive Elements */
+  .btn-primary {
+    background: var(--accent-primary-dark);
+    box-shadow: var(--shadow-md-dark);
+  }
+  
+  .btn-primary:hover {
+    background: #3b82f6;
+    box-shadow: var(--shadow-lg-dark);
+  }
+  
+  .btn-secondary {
+    background: var(--dashboard-bg-tertiary);
+    color: var(--text-primary-dark);
+    border: 1px solid var(--border-secondary-dark);
+  }
+  
+  .btn-secondary:hover {
+    background: var(--dashboard-bg-quaternary);
+    border-color: var(--accent-primary-dark);
+  }
+  
+  /* Input Fields */
+  .input-field {
+    background: var(--dashboard-bg-tertiary);
+    border-color: var(--border-primary-dark);
+    color: var(--text-primary-dark);
+  }
+  
+  .input-field:focus {
+    border-color: var(--accent-primary-dark);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+    background: var(--dashboard-bg-secondary);
+  }
+  
+  /* Progress Elements */
+  .progress-bar {
+    background: var(--dashboard-bg-tertiary);
+  }
+  
+  /* Status Badges */
+  .status-badge-success {
+    background: rgba(52, 211, 153, 0.2);
+    color: var(--accent-secondary-dark);
+    border-color: var(--accent-secondary-dark);
+  }
+  
+  .status-badge-warning {
+    background: rgba(251, 191, 36, 0.2);
+    color: var(--accent-warning-dark);
+    border-color: var(--accent-warning-dark);
+  }
+  
+  .status-badge-error {
+    background: rgba(248, 113, 113, 0.2);
+    color: var(--accent-danger-dark);
+    border-color: var(--accent-danger-dark);
+  }
+  
+  .status-badge-info {
+    background: rgba(167, 139, 250, 0.2);
+    color: var(--accent-info-dark);
+    border-color: var(--accent-info-dark);
+  }
+  
+  /* Risk Cards */
+  .risk-card-high {
+    background: rgba(248, 113, 113, 0.15);
+    border-color: rgba(248, 113, 113, 0.4);
+  }
+  
+  .risk-card-medium {
+    background: rgba(251, 191, 36, 0.15);
+    border-color: rgba(251, 191, 36, 0.4);
+  }
+  
+  .risk-card-low {
+    background: rgba(52, 211, 153, 0.15);
+    border-color: rgba(52, 211, 153, 0.4);
+  }
+  
+
+  
+
+  
+
+  
+  /* Medical Tooltips */
+  .medical-tooltip {
+    background: var(--dashboard-bg-tertiary);
+    border-color: var(--border-secondary-dark);
+    color: var(--text-primary-dark);
+    box-shadow: var(--shadow-xl-dark);
+  }
+  
+  /* Enhanced Focus States */
+  .enhanced-focus:focus {
+    box-shadow: 
+      0 0 0 2px var(--dashboard-bg-primary),
+      0 0 0 4px var(--accent-primary-dark),
+      var(--shadow-lg-dark);
+  }
+  
+  /* Skeleton Loading */
+  .skeleton {
+    background: linear-gradient(
+      90deg, 
+      var(--dashboard-bg-tertiary) 25%, 
+      var(--dashboard-bg-quaternary) 50%, 
+      var(--dashboard-bg-tertiary) 75%
+    );
+  }
+  
+  /* Chart Containers */
+  .chart-container {
+    background: var(--dashboard-bg-secondary);
+    border-color: var(--border-primary-dark);
+  }
+  
+  /* Medical Status Indicators */
+  .status-indicator-online {
+    background: var(--accent-secondary-dark);
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+  }
+  
+  .status-indicator-warning {
+    background: var(--accent-warning-dark);
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+  }
+  
+  .status-indicator-error {
+    background: var(--accent-danger-dark);
+    box-shadow: 0 0 8px rgba(248, 113, 113, 0.6);
+  }
+}
+
+/* Dark Mode Specific Animations */
+:root[data-theme='dark'] {
+  .animate-glow-pulse {
+    animation: glowPulseDark 2s ease-in-out infinite;
+  }
+  
+  @keyframes glowPulseDark {
+    0%, 100% {
+      filter: drop-shadow(0 0 5px var(--accent-primary-dark));
+    }
+    50% {
+      filter: drop-shadow(0 0 15px var(--accent-primary-dark));
+    }
+  }
+  
+  /* Hover glow effects */
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow-dark);
+  }
+  
+  /* Interactive card enhancements */
+  .interactive-card:hover {
+    box-shadow: var(--shadow-xl-dark);
+    border-color: var(--accent-primary-dark);
+  }
+}
+
+/* Dark Mode Scrollbar Styling */
+:root[data-theme='dark'] {
+  /* Webkit browsers */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--dashboard-bg-primary);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--dashboard-bg-tertiary);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--dashboard-bg-quaternary);
+  }
+  
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--dashboard-bg-tertiary) var(--dashboard-bg-primary);
+  }
+}
+
+/* Dark Mode Selection Styling */
+:root[data-theme='dark'] {
+  ::selection {
+    background: rgba(96, 165, 250, 0.3);
+    color: var(--text-primary-dark);
+  }
+  
+  ::-moz-selection {
+    background: rgba(96, 165, 250, 0.3);
+    color: var(--text-primary-dark);
+  }
+}
+
+/* Dark Mode Print Styles */
+@media print {
+  :root[data-theme='dark'] {
+    --dashboard-bg-primary: #ffffff;
+    --dashboard-bg-secondary: #f8fafc;
+    --text-primary-dark: #0f172a;
+    --text-secondary-dark: #334155;
+    
+    .metric-card {
+      background: white !important;
+      color: black !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+  }
+}
+
+/* Responsive Animation System */
+
+/* Base animation classes with reduced motion support */
+@media (prefers-reduced-motion: no-preference) {
+  /* Entrance Animations */
+  .animate-entrance-fade {
+    animation: entranceFade 0.6s ease-out forwards;
+  }
+  
+  .animate-entrance-slide-up {
+    animation: entranceSlideUp 0.6s ease-out forwards;
+  }
+  
+  .animate-entrance-slide-right {
+    animation: entranceSlideRight 0.5s ease-out forwards;
+  }
+  
+  .animate-entrance-scale {
+    animation: entranceScale 0.4s ease-out forwards;
+  }
+  
+  .animate-entrance-bounce {
+    animation: entranceBounce 0.8s ease-out forwards;
+  }
+
+  /* Medical Dashboard Specific Animations */
+  .animate-metric-reveal {
+    animation: metricReveal 1s ease-out forwards;
+  }
+  
+  .animate-progress-fill {
+    animation: progressFill 1.2s ease-out forwards;
+  }
+  
+  .animate-card-stack {
+    animation: cardStack 0.8s ease-out forwards;
+  }
+  
+  .animate-glow-pulse {
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+  
+  .animate-medical-pulse {
+    animation: medicalPulse 1.5s ease-in-out infinite;
+  }
+
+  /* Staggered Animation Delays */
+  .animate-stagger-1 { animation-delay: 0.1s; }
+  .animate-stagger-2 { animation-delay: 0.2s; }
+  .animate-stagger-3 { animation-delay: 0.3s; }
+  .animate-stagger-4 { animation-delay: 0.4s; }
+  .animate-stagger-5 { animation-delay: 0.5s; }
+  .animate-stagger-6 { animation-delay: 0.6s; }
+}
+
+/* Keyframe Definitions */
+@keyframes entranceFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes entranceSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes entranceSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes entranceScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes entranceBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes metricReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes progressFill {
+  0% {
+    width: 0%;
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes cardStack {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) rotateX(15deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-5px) rotateX(-2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+  }
+}
+
+@keyframes medicalPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+/* Responsive Animation Adjustments */
+@media (max-width: 768px) {
+  /* Reduce animation intensity on mobile */
+  .animate-entrance-slide-up {
+    animation-duration: 0.4s;
+  }
+  
+  .animate-entrance-scale {
+    animation-duration: 0.3s;
+  }
+  
+  .animate-metric-reveal {
+    animation-duration: 0.6s;
+  }
+  
+  /* Disable complex animations on mobile for performance */
+  .animate-card-stack {
+    animation: entranceSlideUp 0.4s ease-out forwards;
+  }
+  
+  .animate-glow-pulse {
+    animation: none;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further reduce animations on small screens */
+  .animate-entrance-bounce {
+    animation: entranceSlideUp 0.3s ease-out forwards;
+  }
+  
+  .animate-medical-pulse {
+    animation: none;
+  }
+}
+
+/* High performance mode for low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .animate-glow-pulse,
+  .animate-medical-pulse,
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce {
+    animation: none !important;
+  }
+}
+
+/* Micro-interaction Classes */
+.micro-hover-lift {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.micro-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.micro-hover-glow {
+  transition: all 0.3s ease;
+}
+
+.micro-hover-glow:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+.micro-click-bounce {
+  transition: transform 0.1s ease;
+}
+
+.micro-click-bounce:active {
+  transform: scale(0.98);
+}
+
+.micro-hover-scale {
+  transition: transform 0.2s ease;
+}
+
+.micro-hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Loading State Animations */
+.loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--gray-200) 25%,
+    var(--gray-100) 50%,
+    var(--gray-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeletonLoading 1.5s infinite;
+}
+
+@keyframes skeletonLoading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Medical Dashboard Loading States */
+.medical-loading-pulse {
+  animation: medicalLoadingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes medicalLoadingPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* Interactive Element States */
+.interactive-element {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.interactive-element:hover {
+  transform: translateY(-1px);
+}
+
+.interactive-element:active {
+  transform: translateY(0);
+}
+
+.interactive-element:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Medical Status Animations */
+.status-online {
+  animation: statusOnline 2s ease-in-out infinite;
+}
+
+.status-warning {
+  animation: statusWarning 1s ease-in-out infinite;
+}
+
+.status-error {
+  animation: statusError 0.5s ease-in-out infinite;
+}
+
+@keyframes statusOnline {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes statusWarning {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes statusError {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+/* Progress Animation Enhancements */
+.progress-animated {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-animated::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: progressShimmer 2s infinite;
+}
+
+@keyframes progressShimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Chart Animation Classes */
+.chart-animate-in {
+  animation: chartAnimateIn 1s ease-out forwards;
+}
+
+@keyframes chartAnimateIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Notification Animations */
+.notification-slide-in {
+  animation: notificationSlideIn 0.3s ease-out forwards;
+}
+
+.notification-slide-out {
+  animation: notificationSlideOut 0.3s ease-in forwards;
+}
+
+@keyframes notificationSlideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes notificationSlideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Performance Optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+.animation-paused {
+  animation-play-state: paused !important;
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+  .respect-motion-preference {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Dark Mode Animation Adjustments */
+:root[data-theme='dark'] {
+  .loading-skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--dashboard-bg-tertiary) 25%,
+      var(--dashboard-bg-quaternary) 50%,
+      var(--dashboard-bg-tertiary) 75%
+    );
+  }
+  
+  .micro-hover-glow:hover {
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.6);
+  }
+  
+  .interactive-element:focus {
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.4);
+  }
+}/* Fin
+al Visual Polish and Micro-interactions */
+
+/* Enhanced Medical Dashboard Polish */
+.medical-dashboard-polish {
+  /* Subtle texture overlay */
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+:root[data-theme='dark'] .medical-dashboard-polish {
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+}
+
+/* Enhanced Card Interactions */
+.enhanced-card-interaction {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enhanced-card-interaction::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.enhanced-card-interaction:hover::before {
+  left: 100%;
+}
+
+:root[data-theme='dark'] .enhanced-card-interaction::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+}
+
+/* Medical Status Pulse Effects */
+.medical-status-pulse-success {
+  animation: medicalPulseSuccess 2s ease-in-out infinite;
+}
+
+.medical-status-pulse-warning {
+  animation: medicalPulseWarning 1.5s ease-in-out infinite;
+}
+
+.medical-status-pulse-error {
+  animation: medicalPulseError 1s ease-in-out infinite;
+}
+
+@keyframes medicalPulseSuccess {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+}
+
+@keyframes medicalPulseWarning {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+  }
+}
+
+@keyframes medicalPulseError {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
+/* Enhanced Button Micro-interactions */
+.btn-medical-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-medical-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.btn-medical-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.btn-medical-primary:hover::before {
+  left: 100%;
+}
+
+.btn-medical-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+/* Enhanced Progress Animations */
+.progress-medical-enhanced {
+  position: relative;
+  background: var(--gray-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-medical-enhanced::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.2) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 50px 50px;
+  animation: progressStripes 1s linear infinite;
+}
+
+@keyframes progressStripes {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+/* Medical Tooltip Enhancements */
+.medical-tooltip-enhanced {
+  position: relative;
+  background: var(--dashboard-bg-tertiary);
+  border: 1px solid var(--border-primary-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl-dark);
+  backdrop-filter: blur(10px);
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Enhanced Focus Indicators */
+.focus-medical-enhanced:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 2px var(--white),
+    0 0 0 4px var(--accent-primary-dark),
+    0 0 20px rgba(59, 130, 246, 0.3);
+  border-radius: var(--radius-md);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Medical Data Visualization Enhancements */
+.data-viz-medical {
+  position: relative;
+}
+
+.data-viz-medical::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    var(--accent-primary-dark), 
+    var(--accent-secondary-dark), 
+    var(--accent-primary-dark)
+  );
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.data-viz-medical:hover::before {
+  opacity: 0.3;
+}
+
+/* Enhanced Loading States */
+.loading-medical-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--dashboard-bg-secondary) 25%,
+    var(--dashboard-bg-tertiary) 50%,
+    var(--dashboard-bg-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: medicalSkeletonLoading 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes medicalSkeletonLoading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Medical Chart Enhancements */
+.chart-medical-enhanced {
+  position: relative;
+  background: var(--dashboard-bg-secondary);
+  border: 1px solid var(--border-primary-dark);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.chart-medical-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-primary-dark),
+    transparent
+  );
+}
+
+/* Enhanced Notification Styles */
+.notification-medical {
+  background: var(--dashboard-bg-secondary);
+  border: 1px solid var(--border-secondary-dark);
+  border-left: 4px solid var(--accent-primary-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg-dark);
+  backdrop-filter: blur(10px);
+  animation: notificationSlideInMedical 0.3s ease-out;
+}
+
+@keyframes notificationSlideInMedical {
+  from {
+    transform: translateX(100%) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Medical Form Enhancements */
+.form-medical-enhanced .input-field {
+  position: relative;
+  background: var(--dashboard-bg-secondary);
+  border: 2px solid var(--border-primary-dark);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-medical-enhanced .input-field:focus {
+  border-color: var(--accent-primary-dark);
+  box-shadow: 
+    0 0 0 3px rgba(96, 165, 250, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Enhanced Medical Icons */
+.icon-medical-enhanced {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.icon-medical-enhanced:hover {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* Medical Dashboard Grid Enhancements */
+.dashboard-grid-medical {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.dashboard-grid-medical > * {
+  animation: dashboardItemFadeIn 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.dashboard-grid-medical > *:nth-child(1) { animation-delay: 0.1s; }
+.dashboard-grid-medical > *:nth-child(2) { animation-delay: 0.2s; }
+.dashboard-grid-medical > *:nth-child(3) { animation-delay: 0.3s; }
+.dashboard-grid-medical > *:nth-child(4) { animation-delay: 0.4s; }
+.dashboard-grid-medical > *:nth-child(5) { animation-delay: 0.5s; }
+.dashboard-grid-medical > *:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes dashboardItemFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Enhanced Medical Badges */
+.badge-medical-enhanced {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.badge-medical-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.badge-medical-enhanced:hover {
+  transform: scale(1.05);
+}
+
+.badge-medical-enhanced:hover::before {
+  left: 100%;
+}
+
+/* Medical Success States */
+.success-medical-enhanced {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.warning-medical-enhanced {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+.error-medical-enhanced {
+  background: var(--error-bg);
+  color: var(--error);
+  border: 1px solid var(--error);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+}
+
+/* Final Polish Utilities */
+.medical-glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+:root[data-theme='dark'] .medical-glass-effect {
+  background: rgba(30, 41, 59, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.medical-gradient-text {
+  background: linear-gradient(135deg, var(--accent-primary-dark), var(--accent-secondary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.medical-shadow-glow {
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+:root[data-theme='dark'] .medical-shadow-glow {
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(96, 165, 250, 0.3);
+}
+
+/* Print Optimizations */
+@media print {
+  .medical-dashboard-polish,
+  .enhanced-card-interaction::before,
+  .btn-medical-primary::before,
+  .progress-medical-enhanced::after {
+    display: none !important;
+  }
+  
+  .metric-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  .dashboard-grid-medical {
+    display: block !important;
+  }
+  
+  .dashboard-grid-medical > * {
+    margin-bottom: 1rem !important;
+    animation: none !important;
+  }
+}/* Enhanc
+ed Dark Mode Text Visibility - Specific Fixes */
+:root[data-theme='dark'] {
+  /* Ensure all primary headings are white in dark mode */
+  h1, h2, h3, h4, h5, h6 {
+    color: #ffffff !important;
+  }
+  
+  /* Specific fixes for medical dashboard text */
+  .text-section-title,
+  .text-metric,
+  .metric-card h3,
+  .metric-card h4,
+  .metric-card h5 {
+    color: #ffffff !important;
+  }
+  
+  /* Ensure primary text is white */
+  .text-primary {
+    color: #ffffff !important;
+  }
+  
+  /* Secondary text should be light gray */
+  .text-metric-label,
+  .text-secondary {
+    color: #d1d5db !important;
+  }
+  
+  /* Ensure card titles are white */
+  .card h1,
+  .card h2,
+  .card h3,
+  .card h4,
+  .card h5,
+  .card h6 {
+    color: #ffffff !important;
+  }
+  
+  /* Medical dashboard specific text */
+  .dashboard-title,
+  .section-title,
+  .card-title {
+    color: #ffffff !important;
+  }
+}
+/* OPT
+IMIZACIÓN DE PERFORMANCE - TOGGLE DE TEMA RÁPIDO */
+
+/* Deshabilitar transiciones globales que causan lentitud */
+* {
+  transition: none !important;
+}
+
+/* Habilitar transiciones solo para elementos específicos que las necesitan */
+.btn-primary,
+.btn-secondary,
+.metric-card,
+.card,
+.input-field,
+.interactive-element,
+.micro-hover-lift,
+.micro-hover-glow,
+.enhanced-card-interaction {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Transiciones específicas para hover effects */
+.hover-lift:hover,
+.micro-hover-lift:hover {
+  transition: transform 0.15s ease !important;
+}
+
+/* Transiciones para elementos de UI críticos */
+.progress-fill,
+.status-badge,
+.notification-slide-in {
+  transition: all 0.2s ease !important;
+}
+
+/* Transiciones rápidas para el cambio de tema en elementos específicos */
+html,
+body {
+  transition: background-color 0.1s ease, color 0.1s ease !important;
+}
+
+/* Clase para deshabilitar completamente las transiciones durante el cambio de tema */
+.theme-transitioning * {
+  transition: none !important;
+  animation-duration: 0s !important;
+}
+
+/* Optimización para dispositivos de gama baja */
+@media (max-width: 768px) {
+  * {
+    transition: none !important;
+    animation-duration: 0.1s !important;
+  }
+}
+
+/* Respetar preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ====
+====================================
+   MEJORAS DE RESPONSIVIDAD MÓVIL
+   ======================================== */
+
+/* Optimizaciones generales para móviles */
+@media (max-width: 768px) {
+  /* Reducir padding general en móviles */
+  .metric-card,
+  .card {
+    padding: var(--space-md) !important;
+  }
+  
+  /* Mejorar espaciado en contenedores */
+  .space-y-3 > * + * {
+    margin-top: 0.5rem !important;
+  }
+  
+  .space-y-8 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  /* Optimizar tamaños de fuente */
+  .text-section-title {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-metric {
+    font-size: 2rem !important;
+  }
+  
+  .text-metric-label {
+    font-size: 0.75rem !important;
+  }
+  
+  /* Mejorar botones en móvil */
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 20px !important;
+    font-size: 0.875rem !important;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Optimizar grids para móvil */
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .dashboard-grid,
+  .metric-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-md) !important;
+  }
+  
+  /* Mejorar header en móvil */
+  .flex.items-center.justify-between {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: var(--space-sm);
+  }
+  
+  /* Optimizar iconos y badges */
+  .w-6.h-6 {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+  
+  .w-8.h-8 {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+  }
+  
+  /* Mejorar inputs en móvil */
+  .input-field,
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  select,
+  textarea {
+    font-size: 16px !important; /* Evita zoom en iOS */
+    padding: 12px !important;
+  }
+  
+  /* Optimizar formularios */
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-md) !important;
+  }
+  
+  /* Mejorar pasos del proceso */
+  .grid.grid-cols-1.md\\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-sm) !important;
+  }
+  
+  /* Optimizar cards de pasos */
+  .p-3.rounded-xl {
+    padding: var(--space-md) !important;
+  }
+  
+  /* Mejorar área de upload */
+  .border-2.border-dashed {
+    padding: var(--space-lg) !important;
+  }
+  
+  /* Optimizar preview de imagen */
+  .max-h-32 {
+    max-height: 6rem !important;
+  }
+  
+  /* Mejorar mensajes de error */
+  .text-sm {
+    font-size: 0.875rem !important;
+  }
+  
+  /* Optimizar progress bar */
+  .progress-bar {
+    height: 6px !important;
+  }
+  
+  /* Mejorar resultados */
+  .space-y-8 {
+    gap: var(--space-lg) !important;
+  }
+  
+  /* Optimizar tablas y listas */
+  table {
+    font-size: 0.875rem !important;
+  }
+  
+  /* Mejorar tooltips en móvil */
+  .medical-tooltip-enhanced {
+    max-width: 90vw !important;
+    font-size: 0.875rem !important;
+  }
+  
+  /* Optimizar modales */
+  .modal-content {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: var(--space-sm) !important;
+  }
+  
+  /* Mejorar navegación */
+  nav {
+    padding: var(--space-sm) var(--space-md) !important;
+  }
+  
+  /* Optimizar footer */
+  footer {
+    padding: var(--space-md) !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Optimizaciones para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  /* Reducir aún más el padding */
+  .metric-card,
+  .card {
+    padding: var(--space-sm) !important;
+  }
+  
+  /* Optimizar header principal */
+  .flex.items-center > div:first-child {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  
+  .bg-gradient-to-br.from-blue-500 {
+    padding: 0.5rem !important;
+    margin-right: 0.5rem !important;
+  }
+  
+  /* Reducir tamaños de fuente */
+  .text-section-title {
+    font-size: 1.125rem !important;
+  }
+  
+  .text-metric {
+    font-size: 1.75rem !important;
+  }
+  
+  h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  h2 {
+    font-size: 1.125rem !important;
+  }
+  
+  h3 {
+    font-size: 1rem !important;
+  }
+  
+  /* Optimizar botones */
+  .btn-primary,
+  .btn-secondary {
+    padding: 8px 16px !important;
+    font-size: 0.8125rem !important;
+  }
+  
+  /* Mejorar iconos */
+  .w-16.h-16 {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+  
+  .w-12.h-12 {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+  
+  /* Optimizar espaciado */
+  .space-y-3 > * + * {
+    margin-top: 0.375rem !important;
+  }
+  
+  .gap-3 {
+    gap: 0.5rem !important;
+  }
+  
+  /* Mejorar formularios */
+  label {
+    font-size: 0.875rem !important;
+  }
+  
+  /* Optimizar mensajes informativos */
+  .bg-blue-50.dark\\:bg-blue-900\\/20 {
+    padding: var(--space-sm) !important;
+  }
+  
+  .text-xs {
+    font-size: 0.75rem !important;
+  }
+  
+  /* Mejorar lista de consejos */
+  ul li {
+    font-size: 0.75rem !important;
+  }
+  
+  /* Optimizar progress bar */
+  .max-w-md {
+    max-width: 100% !important;
+  }
+  
+  /* Mejorar error display */
+  .flex.items-start.space-x-4 {
+    flex-direction: column !important;
+    space-x: 0 !important;
+  }
+  
+  .flex-shrink-0 {
+    margin-bottom: var(--space-sm) !important;
+  }
+}
+
+/* Optimizaciones para landscape en móviles */
+@media (max-width: 896px) and (orientation: landscape) {
+  /* Reducir altura de elementos */
+  .metric-card {
+    padding: var(--space-sm) var(--space-md) !important;
+  }
+  
+  /* Optimizar header */
+  .py-3 {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  
+  /* Mejorar espaciado vertical */
+  .space-y-3 > * + * {
+    margin-top: 0.5rem !important;
+  }
+  
+  .mb-4 {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .mb-6 {
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Optimizar altura de imágenes */
+  .max-h-32 {
+    max-height: 4rem !important;
+  }
+  
+  /* Mejorar progress */
+  .w-16.h-16 {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+}
+
+/* Optimizaciones para tablets */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Ajustar grids para tablets */
+  .grid.grid-cols-1.md\\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  /* Optimizar padding */
+  .metric-card {
+    padding: var(--space-lg) !important;
+  }
+  
+  /* Mejorar tamaños de fuente */
+  .text-section-title {
+    font-size: 1.375rem !important;
+  }
+  
+  .text-metric {
+    font-size: 2.25rem !important;
+  }
+}
+
+/* Mejoras de touch targets para móviles */
+@media (max-width: 768px) {
+  /* Asegurar que todos los elementos interactivos tengan al menos 44x44px */
+  button,
+  a,
+  input[type="button"],
+  input[type="submit"],
+  input[type="checkbox"],
+  input[type="radio"],
+  select {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  /* Mejorar área de click en iconos */
+  .cursor-pointer {
+    padding: var(--space-sm) !important;
+  }
+  
+  /* Optimizar select en móvil */
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem !important;
+  }
+}
+
+/* Mejoras de accesibilidad en móvil */
+@media (max-width: 768px) {
+  /* Mejorar contraste en modo claro */
+  .text-gray-600 {
+    color: #4b5563 !important;
+  }
+  
+  .text-gray-500 {
+    color: #6b7280 !important;
+  }
+  
+  /* Mejorar contraste en modo oscuro */
+  :root[data-theme='dark'] .text-gray-400 {
+    color: #d1d5db !important;
+  }
+  
+  :root[data-theme='dark'] .text-gray-500 {
+    color: #e5e7eb !important;
+  }
+  
+  /* Mejorar focus visible en móvil */
+  *:focus-visible {
+    outline: 3px solid var(--accent) !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* Optimizaciones de performance para móviles */
+@media (max-width: 768px) {
+  /* Deshabilitar animaciones complejas */
+  .animate-glow-pulse,
+  .animate-medical-pulse,
+  .medical-status-pulse,
+  .progress-animated::after {
+    animation: none !important;
+  }
+  
+  /* Simplificar sombras */
+  .shadow-xl,
+  .shadow-2xl {
+    box-shadow: var(--shadow-md) !important;
+  }
+  
+  /* Deshabilitar blur en móviles de gama baja */
+  @supports not (backdrop-filter: blur(10px)) {
+    .glass-card,
+    .medical-glass-effect {
+      backdrop-filter: none !important;
+      background: var(--white) !important;
+    }
+  }
+  
+  /* Optimizar transforms */
+  .hover-lift:hover,
+  .micro-hover-lift:hover {
+    transform: none !important;
+  }
+}
+
+/* Mejoras específicas para iOS */
+@supports (-webkit-touch-callout: none) {
+  /* Fix para inputs en iOS */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important; /* Previene zoom automático */
+  }
+  
+  /* Fix para scroll suave en iOS */
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix para botones en iOS */
+  button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  /* Fix para select en iOS */
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+/* Mejoras específicas para Android */
+@media (max-width: 768px) {
+  /* Optimizar tap highlight */
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Mejorar scroll */
+  body {
+    overscroll-behavior-y: contain;
+  }
+}
+
+/* Mejoras para modo oscuro en móvil */
+@media (max-width: 768px) {
+  :root[data-theme='dark'] {
+    /* Reducir brillo en móviles para ahorrar batería */
+    --dashboard-bg-primary: #0a0f1a;
+    --dashboard-bg-secondary: #151d2e;
+  }
+  
+  :root[data-theme='dark'] .metric-card {
+    box-shadow: var(--shadow-sm-dark) !important;
+  }
+  
+  :root[data-theme='dark'] .card:hover {
+    box-shadow: var(--shadow-md-dark) !important;
+  }
+}
+
+/* Optimizaciones para pantallas con notch */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+  
+  nav {
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+  }
+  
+  footer {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Mejoras de legibilidad en móvil */
+@media (max-width: 768px) {
+  /* Aumentar line-height para mejor legibilidad */
+  p {
+    line-height: 1.6 !important;
+  }
+  
+  /* Mejorar espaciado entre párrafos */
+  p + p {
+    margin-top: 1rem !important;
+  }
+  
+  /* Optimizar listas */
+  ul, ol {
+    padding-left: 1.25rem !important;
+  }
+  
+  li {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  /* Mejorar tablas en móvil */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Mejoras para conexiones lentas */
+@media (max-width: 768px) and (prefers-reduced-data: reduce) {
+  /* Deshabilitar imágenes de fondo */
+  .medical-dashboard-polish {
+    background-image: none !important;
+  }
+  
+  /* Simplificar gradientes */
+  .bg-gradient-to-br,
+  .bg-gradient-to-r {
+    background-image: none !important;
+    background-color: var(--secondary) !important;
+  }
+  
+  /* Deshabilitar sombras complejas */
+  * {
+    box-shadow: none !important;
+  }
+}
+
+/* Mejoras de UX para formularios en móvil */
+@media (max-width: 768px) {
+  /* Mejorar validación visual */
+  input:invalid {
+    border-color: var(--error) !important;
+  }
+  
+  input:valid {
+    border-color: var(--success) !important;
+  }
+  
+  /* Mejorar feedback de focus */
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-width: 2px !important;
+    padding: 11px !important; /* Compensar border más grueso */
+  }
+  
+  /* Mejorar mensajes de error */
+  .text-red-600,
+  .text-red-400 {
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+  }
+}
+
+/* Optimizaciones finales para móvil */
+@media (max-width: 768px) {
+  /* Mejorar scroll to top */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Optimizar imágenes */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Prevenir overflow horizontal */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Mejorar contenedores */
+  .container,
+  .max-w-2xl,
+  .max-w-4xl,
+  .max-w-6xl {
+    max-width: 100% !important;
+    padding-left: var(--space-md) !important;
+    padding-right: var(--space-md) !important;
+  }
+}
+
+/* ========================================
+   FIN DE MEJORAS DE RESPONSIVIDAD MÓVIL
+   ======================================== */
+
+/* ========================================
+   MEJORAS ADICIONALES PARA MÓVILES
+   ======================================== */
+
+/* Optimización de Hero Section para móvil */
+@media (max-width: 768px) {
+  /* Hero más compacto */
+  section.relative.overflow-hidden {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* Títulos más pequeños */
+  h1 {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+    line-height: 1.3 !important;
+  }
+
+  h3 {
+    font-size: 1.25rem !important;
+  }
+
+  h4 {
+    font-size: 1.125rem !important;
+  }
+
+  /* Pills y badges más pequeños */
+  .inline-flex.items-center.px-4 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    padding-top: 0.375rem !important;
+    padding-bottom: 0.375rem !important;
+  }
+
+  /* Botones CTA más compactos */
+  .group.relative.inline-flex {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Trust indicators más pequeños */
+  .flex.flex-wrap.justify-center.items-center.gap-8 {
+    gap: 1rem !important;
+  }
+
+  /* Reducir tamaño de emojis */
+  .text-4xl {
+    font-size: 2rem !important;
+  }
+
+  /* Grids más compactos */
+  .grid.grid-cols-2 {
+    gap: 0.5rem !important;
+  }
+
+  .grid.md\\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  .grid.md\\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+}
+
+/* Optimización de página Analizar para móvil */
+@media (max-width: 768px) {
+  /* Pasos del proceso más compactos */
+  .grid.grid-cols-1.md\\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Formulario más compacto */
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Labels más pequeños */
+  label {
+    font-size: 0.875rem !important;
+    margin-bottom: 0.375rem !important;
+  }
+
+  /* Inputs más compactos */
+  input[type="number"],
+  select {
+    padding: 0.625rem 0.75rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Mensajes de error más pequeños */
+  .text-sm.text-red-600 {
+    font-size: 0.75rem !important;
+  }
+
+  /* Botón de análisis más compacto */
+  .btn-primary.hover-lift {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Iconos más pequeños en pasos */
+  .w-8.h-8 {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+  }
+
+  .w-6.h-6 {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+
+  .w-5.h-5 {
+    width: 1.125rem !important;
+    height: 1.125rem !important;
+  }
+
+  .w-4.h-4 {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}
+
+/* Optimización de resultados para móvil */
+@media (max-width: 768px) {
+  /* Cards de resultados más compactos */
+  .space-y-8 {
+    gap: 1rem !important;
+  }
+
+  .space-y-6 {
+    gap: 0.75rem !important;
+  }
+
+  .space-y-4 {
+    gap: 0.5rem !important;
+  }
+
+  .space-y-3 {
+    gap: 0.375rem !important;
+  }
+
+  /* Padding horizontal reducido */
+  .px-8 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .px-6 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .px-4 {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  /* Padding vertical reducido */
+  .py-8 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  .py-6 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .py-4 {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  .py-3 {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .py-2 {
+    padding-top: 0.375rem !important;
+    padding-bottom: 0.375rem !important;
+  }
+}
+
+/* Optimización de NavBar para móvil */
+@media (max-width: 768px) {
+  nav {
+    padding: 0.75rem 1rem !important;
+  }
+
+  /* Logo más pequeño */
+  nav img,
+  nav svg {
+    height: 2rem !important;
+    width: auto !important;
+  }
+
+  /* Botones de navegación más compactos */
+  nav button {
+    padding: 0.5rem !important;
+  }
+
+  /* Menú móvil optimizado */
+  nav .md\\:hidden {
+    width: 100% !important;
+  }
+
+  nav a {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Optimización de Footer para móvil */
+@media (max-width: 768px) {
+  footer {
+    padding: 1.5rem 1rem !important;
+  }
+
+  footer .grid {
+    gap: 1.5rem !important;
+  }
+
+  footer .text-sm {
+    font-size: 0.75rem !important;
+  }
+
+  footer .text-xs {
+    font-size: 0.6875rem !important;
+  }
+
+  /* Logo del footer más pequeño */
+  footer img,
+  footer svg {
+    height: 2.5rem !important;
+  }
+
+  /* Disclaimer más compacto */
+  footer .bg-yellow-50 {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Mejoras de touch targets para móvil */
+@media (max-width: 768px) {
+  /* Asegurar que todos los elementos interactivos tengan al menos 44px */
+  button,
+  a,
+  input[type="button"],
+  input[type="submit"],
+  select {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  /* Mejorar área de toque para checkboxes y radios */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+}
+
+/* Optimización de animaciones para móvil */
+@media (max-width: 768px) {
+  /* Reducir duración de animaciones */
+  .transition-all,
+  .transition-colors,
+  .transition-transform {
+    transition-duration: 200ms !important;
+  }
+
+  /* Simplificar transformaciones */
+  .hover\\:scale-105:hover,
+  .hover\\:scale-110:hover {
+    transform: scale(1.02) !important;
+  }
+
+  .hover\\:-translate-y-2:hover,
+  .hover\\:-translate-y-4:hover {
+    transform: translateY(-2px) !important;
+  }
+}
+
+/* Mejoras de contraste para móvil al sol */
+@media (max-width: 768px) {
+  /* Aumentar contraste de texto */
+  .text-gray-600 {
+    color: rgb(75 85 99) !important;
+  }
+
+  :root[data-theme='dark'] .text-gray-600 {
+    color: rgb(209 213 219) !important;
+  }
+
+  /* Mejorar contraste de bordes */
+  .border-gray-200 {
+    border-color: rgb(209 213 219) !important;
+  }
+
+  :root[data-theme='dark'] .border-gray-200 {
+    border-color: rgb(75 85 99) !important;
+  }
+}
+
+/* Optimización de carga de imágenes en móvil */
+@media (max-width: 768px) {
+  img {
+    /* Lazy loading nativo */
+    loading: lazy;
+    /* Prevenir layout shift */
+    aspect-ratio: attr(width) / attr(height);
+  }
+
+  /* Placeholder mientras carga */
+  img:not([src]) {
+    background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+}
+
+/* Mejoras de accesibilidad en móvil */
+@media (max-width: 768px) {
+  /* Mejorar focus visible */
+  *:focus-visible {
+    outline: 3px solid var(--accent) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Mejorar skip links */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+}
+
+/* Optimización para pantallas muy pequeñas (< 375px) */
+@media (max-width: 375px) {
+  /* Reducir aún más el espaciado */
+  .container,
+  .max-w-2xl,
+  .max-w-4xl,
+  .max-w-6xl {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Títulos ultra compactos */
+  h1 {
+    font-size: 1.75rem !important;
+  }
+
+  h2 {
+    font-size: 1.375rem !important;
+  }
+
+  h3 {
+    font-size: 1.125rem !important;
+  }
+
+  /* Botones más pequeños */
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.625rem 1rem !important;
+    font-size: 0.8125rem !important;
+  }
+
+  /* Cards ultra compactos */
+  .card,
+  .metric-card {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Optimización para landscape en móvil */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Reducir altura de hero */
+  section.relative.overflow-hidden {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  /* Reducir espaciado vertical */
+  .space-y-8 {
+    gap: 0.75rem !important;
+  }
+
+  .space-y-6 {
+    gap: 0.5rem !important;
+  }
+
+  /* Hacer grids horizontales */
+  .grid.grid-cols-1 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+}
+
+/* Mejoras de rendimiento para móvil */
+@media (max-width: 768px) {
+  /* Usar GPU acceleration solo donde sea necesario */
+  .animate-spin,
+  .animate-pulse,
+  .animate-bounce {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Remover will-change de elementos estáticos */
+  * {
+    will-change: auto !important;
+  }
+
+  /* Optimizar repaint */
+  .card,
+  .metric-card {
+    contain: layout style paint;
+  }
+}
+
+/* ========================================
+   FIN DE MEJORAS ADICIONALES PARA MÓVILES
+   ======================================== */
+
+
+/* ========================================
+   LOGIN FORM - MOBILE ONLY FIXES
+   Solo para pantallas móviles (max-width: 768px)
+   NO afecta el diseño de escritorio
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Aumentar padding-left del input para evitar superposición con el icono */
+  input[type="text"]#username,
+  input[type="password"]#password {
+    padding-left: 3.5rem !important; /* 56px - más espacio en móviles */
+    font-size: 16px !important; /* Evita zoom automático en iOS */
+  }
+  
+  /* Asegurar posicionamiento correcto del icono en móviles */
+  #username ~ div.absolute,
+  #password ~ div.absolute {
+    left: 0.875rem !important; /* 14px - centrar mejor el icono */
+  }
+}
+
+/* Para móviles muy pequeños (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  input[type="text"]#username,
+  input[type="password"]#password {
+    padding-left: 3.25rem !important; /* 52px */
+    padding-right: 0.875rem !important; /* 14px */
+    font-size: 15px !important;
+  }
+  
+  #username ~ div.absolute,
+  #password ~ div.absolute {
+    left: 0.75rem !important; /* 12px */
+  }
+}
+
+
+/* ========================================
+   HOME PAGE - MOBILE ICON CENTERING FIX
+   Solo para pantallas móviles (max-width: 768px)
+   Centra los íconos dentro de las figuras circulares
+   NO afecta el diseño de escritorio
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Centrar íconos dentro de círculos/figuras en la página de inicio */
+  
+  /* Feature Icons - Círculos con íconos (w-16 h-16, w-12 h-12, w-10 h-10, w-8 h-8) */
+  .w-16.h-16.rounded-full,
+  .w-12.h-12.rounded-full,
+  .w-10.h-10.rounded-full,
+  .w-8.h-8.rounded-full {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Asegurar que los SVG dentro de los círculos estén centrados */
+  .w-16.h-16.rounded-full svg,
+  .w-12.h-12.rounded-full svg,
+  .w-10.h-10.rounded-full svg,
+  .w-8.h-8.rounded-full svg {
+    margin: auto !important;
+  }
+  
+  /* Centrar contenedores de íconos con gradientes */
+  .bg-gradient-to-r.rounded-full,
+  .bg-gradient-to-br.rounded-full {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Centrar íconos en tarjetas con fondos de color */
+  .bg-green-100.rounded-full,
+  .bg-blue-100.rounded-full,
+  .bg-purple-100.rounded-full,
+  .bg-cyan-500.rounded-full,
+  .bg-teal-500.rounded-full,
+  .bg-green-500.rounded-full,
+  .bg-blue-500.rounded-full,
+  .bg-purple-500.rounded-full,
+  .bg-orange-500.rounded-full {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Centrar íconos en contenedores con padding */
+  .bg-accent\\/10.rounded-full,
+  .bg-secondary\\/10.rounded-full {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Asegurar que los emojis en círculos también estén centrados */
+  .w-20.h-20.rounded-2xl {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+
+/* ========================================
+   ANALIZAR PAGE - MOBILE NUMBER CENTERING FIX
+   Solo para pantallas móviles (max-width: 768px)
+   Centra los números dentro de los círculos de ranking
+   NO afecta el diseño de escritorio
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Centrar números de ranking dentro de círculos en la página de análisis */
+  
+  /* Círculos con números de ranking (1, 2, 3) */
+  .text-2xl.font-bold:has(+ *),
+  span.text-2xl.font-bold {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  
+  /* Contenedores de números con gradientes o colores sólidos */
+  .bg-gradient-to-r.text-white.rounded-full.w-5.h-5,
+  .bg-gradient-to-r.text-white.rounded-full.w-6.h-6,
+  .bg-gradient-to-r.text-white.rounded-full.w-8.h-8,
+  .bg-cyan-500.text-white.rounded-full,
+  .bg-blue-500.text-white.rounded-full,
+  .bg-purple-500.text-white.rounded-full {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Asegurar que los números dentro de los círculos estén centrados */
+  .rounded-full.flex.items-center.justify-center span,
+  .rounded-full span.text-2xl,
+  .rounded-full span.font-bold {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+
+/* ========================================
+   MOBILE PERFORMANCE OPTIMIZATION
+   Optimizaciones específicas para móvil
+   Usa GPU acceleration y transiciones ligeras
+   ======================================== */
+
+/* Botones optimizados para móvil - Aceleración por GPU */
+.btn-submit-optimized {
+  /* Usar will-change para preparar la GPU */
+  will-change: transform, opacity;
+  /* Forzar aceleración por GPU */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+  /* Transiciones solo en propiedades que usa GPU */
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover solo en desktop */
+@media (min-width: 769px) {
+  .btn-submit-optimized:hover:not(:disabled) {
+    transform: translateZ(0) scale(1.02);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    opacity: 0.95;
+  }
+}
+
+/* Optimizaciones específicas para móvil */
+@media (max-width: 768px) {
+  /* Botones: feedback táctil inmediato sin animaciones pesadas */
+  .btn-submit-optimized:active:not(:disabled) {
+    transform: translateZ(0) scale(0.98);
+    opacity: 0.9;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+  }
+  
+  /* Reducir duración de transiciones en móvil */
+  .btn-submit-optimized {
+    transition-duration: 0.15s;
+  }
+  
+  /* Optimizar animaciones de spinner en móvil */
+  .animate-spin {
+    animation-duration: 0.8s;
+  }
+  
+  /* Desactivar hover effects en móvil (touch devices) */
+  .hover\:scale-\[1\.02\]:hover {
+    transform: none !important;
+  }
+  
+  .hover\:shadow-lg:hover {
+    box-shadow: none !important;
+  }
+  
+  /* Optimizar transiciones de inputs en móvil */
+  input[type="text"],
+  input[type="password"] {
+    transition-duration: 0.15s !important;
+  }
+  
+  /* Reducir blur en elementos decorativos para mejor rendimiento */
+  .blur-3xl {
+    filter: blur(40px) !important;
+  }
+  
+  /* Optimizar backdrop-blur en móvil */
+  .backdrop-blur-md {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+}
+
+/* Touch optimization - Eliminar delay de 300ms en móvil */
+@media (max-width: 768px) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Optimización de animaciones para dispositivos de bajo rendimiento */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+  /* Usar animaciones más ligeras */
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.15s !important;
+  }
+  
+  /* Mantener animaciones críticas */
+  .animate-spin {
+    animation-duration: 0.8s !important;
+  }
+}
+
+/* Optimización para dispositivos con GPU limitada */
+@media (max-width: 768px) {
+  /* Limitar el número de elementos con will-change */
+  .card:hover,
+  .hover-lift:hover {
+    will-change: auto !important;
+  }
+  
+  /* Simplificar gradientes en móvil para mejor rendimiento */
+  .bg-gradient-to-r,
+  .bg-gradient-to-br,
+  .bg-gradient-to-tr {
+    background-attachment: scroll !important;
+  }
+}
+
+
+/* ========================================
+   THEME TOGGLE OPTIMIZATION
+   Cambio de tema instantáneo en móvil
+   ======================================== */
+
+/* ✅ Botón de tema con GPU acceleration */
+.theme-toggle-btn {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+/* ✅ Transiciones de tema usando SOLO CSS variables */
+/* Esto evita re-renders pesados en React */
+:root {
+  /* Transiciones suaves pero rápidas */
+  --theme-transition-duration: 0.2s;
+  --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ✅ Aplicar transiciones SOLO a propiedades que usa GPU */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, transform;
+  transition-duration: var(--theme-transition-duration);
+  transition-timing-function: var(--theme-transition-timing);
+}
+
+/* ✅ OPTIMIZACIÓN MÓVIL: Transiciones más rápidas */
+@media (max-width: 768px) {
+  :root {
+    --theme-transition-duration: 0.15s;
+  }
+  
+  /* ✅ Feedback táctil inmediato en el botón */
+  .theme-toggle-btn:active {
+    transform: translateZ(0) scale(0.95);
+    transition-duration: 0.1s;
+  }
+  
+  /* ✅ Desactivar transiciones pesadas en móvil durante cambio de tema */
+  .theme-switching * {
+    transition-duration: 0.1s !important;
+  }
+}
+
+/* ✅ Optimización para dispositivos de bajo rendimiento */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+  /* Mantener animaciones pero más ligeras */
+  * {
+    animation-duration: 0.15s !important;
+  }
+}
+
+/* ✅ Prevenir flash durante cambio de tema */
+html {
+  background-color: var(--background);
+  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--primary);
+  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing),
+              color var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* ✅ Optimizar cambio de tema en elementos específicos */
+.card,
+.btn-primary,
+.btn-secondary,
+.input-field {
+  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing),
+              border-color var(--theme-transition-duration) var(--theme-transition-timing),
+              color var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+
+/* ========================================
+   CORRECCIÓN DE CENTRADO DE CÍRCULOS NUMERADOS EN MÓVIL
+   Solo para página de Analizar (Top 3) - No afecta escritorio
+   ======================================== */
+
+/* Centrado perfecto para círculos de posición en PrimaryResultCard (Top 3) */
+@media (max-width: 768px) {
+  .position-circle-mobile {
+    /* Flexbox para centrado perfecto horizontal y vertical */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Eliminar padding/margin que descuadre */
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    /* Asegurar que el contenido interno esté centrado */
+    text-align: center !important;
+  }
+  
+  .position-circle-mobile > span {
+    /* El span interno debe estar perfectamente centrado */
+    display: block !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Centrado para números de posición en AnalizarPage */
+  .position-number-mobile {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+  }
+}
+
+/* Optimización adicional para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .position-circle-mobile {
+    /* Mantener tamaño consistente */
+    min-width: 2.5rem !important;
+    min-height: 2.5rem !important;
+  }
+  
+  .position-number-mobile {
+    font-size: 1.25rem !important;
+    line-height: 1 !important;
+  }
+}
+
+
+/* ========================================
+   AJUSTE DE TAMAÑO DE LOGOS EN MÓVIL
+   Solo para pantallas pequeñas - No afecta escritorio
+   ======================================== */
+
+/* Logo más grande en Login (móvil) - NO MODIFICAR */
+@media (max-width: 768px) {
+  .logo-mobile-login {
+    /* Aumentar tamaño del logo en Login móvil */
+    height: 5rem !important; /* 80px - antes era 3rem (48px) */
+    width: auto !important;
+    max-width: 100% !important;
+    
+    /* Mantener proporción y evitar distorsión */
+    object-fit: contain !important;
+    
+    /* Centrado perfecto */
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  /* Logo más grande en Navbar (móvil) - AGRANDADO */
+  .logo-mobile-navbar {
+    /* Aumentar significativamente el tamaño del logo en Navbar móvil */
+    height: 4rem !important; /* 64px - antes era 2.5rem (40px) */
+    width: auto !important;
+    max-width: none !important;
+    
+    /* Mantener proporción y evitar distorsión */
+    object-fit: contain !important;
+    
+    /* Asegurar que no se recorte */
+    display: block !important;
+  }
+  
+  /* Aumentar altura del Navbar en móvil para acomodar el logo más grande */
+  nav.bg-white {
+    min-height: 4.5rem !important; /* 72px - antes era 4rem (64px) */
+  }
+  
+  nav.bg-white > div > div {
+    min-height: 4.5rem !important; /* 72px */
+    height: auto !important;
+  }
+}
+
+/* Optimización para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .logo-mobile-login {
+    /* Ajustar ligeramente en pantallas muy pequeñas */
+    height: 4.5rem !important; /* 72px */
+  }
+  
+  .logo-mobile-navbar {
+    /* Logo grande también en pantallas muy pequeñas */
+    height: 3.5rem !important; /* 56px */
+  }
+  
+  /* Ajustar altura del Navbar en pantallas muy pequeñas */
+  nav.bg-white {
+    min-height: 4rem !important; /* 64px */
+  }
+  
+  nav.bg-white > div > div {
+    min-height: 4rem !important; /* 64px */
+  }
+}
+
+/* Asegurar que el contenedor del logo también se ajuste */
+@media (max-width: 768px) {
+  .logo-mobile-login img,
+  .logo-mobile-navbar img {
+    /* Asegurar que la imagen interna respete el tamaño */
+    height: 100% !important;
+    width: auto !important;
+    object-fit: contain !important;
+  }
+  
+  /* Asegurar que el contenedor flex del logo en Navbar se ajuste */
+  .logo-mobile-navbar + span {
+    /* Ajustar el texto del logo si existe */
+    font-size: 1.125rem !important; /* 18px */
+    line-height: 1.2 !important;
+  }
+}
+
+
+/* Custom Scrollbar Styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+:root[data-theme='dark'] .custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--gray-800);
+}
+
+:root[data-theme='dark'] .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--gray-600);
+}
+
+:root[data-theme='dark'] .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* Firefox scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-400) var(--gray-100);
+}
+
+:root[data-theme='dark'] .custom-scrollbar {
+  scrollbar-color: var(--gray-600) var(--gray-800);
+}
+
+
+/* ========================================
+   ANIMACIÓN DE DONA PARA STEP 3
+   ======================================== */
+
+@keyframes donutFill {
+  from {
+    stroke-dashoffset: 440; /* Circunferencia completa */
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: var(--final-offset);
+    opacity: 1;
+  }
+}
+
+/* Animación suave de entrada para las tarjetas del Step 3 */
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Aplicar animación escalonada a las tarjetas */
+.animate-card-slide-in {
+  animation: cardSlideIn 0.5s ease-out forwards;
+}
+
+.animate-card-slide-in:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.animate-card-slide-in:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.animate-card-slide-in:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Animación de retracción para el Step 2 */
+@keyframes stepRetract {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+}
+
+.animate-step-retract {
+  animation: stepRetract 0.4s ease-out forwards;
 }

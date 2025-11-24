@@ -8,12 +8,14 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
     ports:
-      - "80:80"       # Proxy inverso - entrada principal
+      - "8081:80"     # Cambiar puerto para evitar conflicto con frontend
       - "8080:8080"   # Traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - app-network
+    profiles:
+      - with-traefik  # Solo se inicia si se especifica explícitamente
 
   backend:
     build:
@@ -26,9 +28,9 @@ services:
       DATABASE_URL: postgresql://admin:admin123@postgres:5432/appdb
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.rule=PathPrefix(`/api`) || PathPrefix(`/predict`)"
       - "traefik.http.routers.backend.entrypoints=web"
-      - "traefik.http.routers.backend.priority=100"
+      - "traefik.http.routers.backend.priority=200"
       - "traefik.http.services.backend.loadbalancer.server.port=8000"
     networks:
       - app-network
@@ -48,18 +50,12 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - "5173:80"     # Puerto local para desarrollo (mapeado a 5173 como Vite)
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.routers.frontend.priority=1"
-      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "80:80"       # Puerto 80 para acceso directo y Cloudflare Tunnel
+      - "5173:80"     # Puerto local alternativo
     networks:
       - app-network
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
 
   postgres:
     image: postgres:16-alpine

@@ -1,10 +1,17 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import os
+import secrets
 
 app = FastAPI()
+
+# Modelo para login
+class LoginRequest(BaseModel):
+    username: str
+    password: str
 
 # Configurar CORS para permitir requests desde el frontend
 app.add_middleware(
@@ -84,3 +91,47 @@ async def create_enfermedad(nombre_enfermedad: str):
         return {"enfermedad": nueva_enfermedad}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al crear enfermedad: {str(e)}")
+
+@app.post("/api/login")
+async def login(credentials: LoginRequest):
+    """
+    Endpoint de login simple
+    Credenciales de prueba:
+    - Usuario: admin / Contraseña: admin123
+    - Usuario: doctor / Contraseña: doctor123
+    """
+    # Usuarios de prueba (en producción esto debería estar en la base de datos con hash)
+    valid_users = {
+        "admin": {"password": "admin123", "displayName": "Administrador", "role": "admin"},
+        "doctor": {"password": "doctor123", "displayName": "Dr. García", "role": "doctor"},
+        "demo": {"password": "demo123", "displayName": "Usuario Demo", "role": "user"}
+    }
+    
+    username = credentials.username.lower()
+    
+    if username not in valid_users:
+        raise HTTPException(status_code=401, detail="Usuario o contraseña incorrectos")
+    
+    user_data = valid_users[username]
+    
+    if credentials.password != user_data["password"]:
+        raise HTTPException(status_code=401, detail="Usuario o contraseña incorrectos")
+    
+    # Generar token simple (en producción usar JWT)
+    token = secrets.token_urlsafe(32)
+    
+    return {
+        "success": True,
+        "token": token,
+        "user": {
+            "username": username,
+            "displayName": user_data["displayName"],
+            "role": user_data["role"]
+        },
+        "message": "Login exitoso"
+    }
+
+@app.get("/api/health")
+async def health_check():
+    """Health check endpoint"""
+    return {"status": "ok", "message": "Backend funcionando correctamente"}

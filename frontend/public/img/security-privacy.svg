@@ -1,0 +1,89 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#F0FDF4"/>
+  
+  <!-- Main shield -->
+  <path d="M200 50 Q250 70 250 120 Q250 170 200 220 Q150 170 150 120 Q150 70 200 50" fill="#10B981"/>
+  <path d="M200 60 Q240 75 240 120 Q240 160 200 200 Q160 160 160 120 Q160 75 200 60" fill="#FFFFFF"/>
+  
+  <!-- Lock icon in shield -->
+  <rect x="190" y="110" width="20" height="25" rx="3" fill="#10B981"/>
+  <path d="M185 110 Q185 100 200 100 Q215 100 215 110" stroke="#10B981" stroke-width="3" fill="none"/>
+  <circle cx="200" cy="125" r="3" fill="#FFFFFF"/>
+  
+  <!-- Data encryption visualization -->
+  <rect x="80" y="100" width="60" height="40" rx="4" fill="#1E3A8A"/>
+  <rect x="85" y="105" width="50" height="30" rx="2" fill="#FFFFFF"/>
+  
+  <!-- Binary code -->
+  <text x="90" y="115" fill="#1E3A8A" font-family="monospace" font-size="6">1010</text>
+  <text x="90" y="122" fill="#1E3A8A" font-family="monospace" font-size="6">0110</text>
+  <text x="90" y="129" fill="#1E3A8A" font-family="monospace" font-size="6">1001</text>
+  
+  <!-- Encryption arrow -->
+  <path d="M145 120 Q170 110 185 120" stroke="#06B6D4" stroke-width="3" fill="none"/>
+  <path d="M180 115 L185 120 L180 125" stroke="#06B6D4" stroke-width="3" fill="none"/>
+  
+  <!-- Encrypted data -->
+  <rect x="260" y="100" width="60" height="40" rx="4" fill="#10B981"/>
+  <rect x="265" y="105" width="50" height="30" rx="2" fill="#FFFFFF"/>
+  
+  <!-- Encrypted symbols -->
+  <text x="270" y="115" fill="#10B981" font-family="monospace" font-size="6">***</text>
+  <text x="270" y="122" fill="#10B981" font-family="monospace" font-size="6">###</text>
+  <text x="270" y="129" fill="#10B981" font-family="monospace" font-size="6">@@@</text>
+  
+  <!-- HTTPS indicator -->
+  <rect x="150" y="180" width="100" height="25" rx="12" fill="#1E3A8A"/>
+  <text x="200" y="195" text-anchor="middle" fill="#FFFFFF" font-family="Arial" font-size="10">🔒 HTTPS</text>
+  
+  <!-- Privacy elements -->
+  <circle cx="100" cy="220" r="15" fill="#6B7280" opacity="0.3"/>
+  <path d="M90 215 Q100 205 110 215 Q100 225 90 215" fill="#6B7280"/>
+  <circle cx="100" cy="220" r="8" fill="#FFFFFF"/>
+  <text x="100" y="224" text-anchor="middle" fill="#6B7280" font-family="Arial" font-size="8">👁</text>
+  <line x1="85" y1="205" x2="115" y2="235" stroke="#EF4444" stroke-width="3"/>
+  
+  <!-- Data deletion -->
+  <rect x="280" y="200" width="30" height="20" rx="2" fill="#EF4444" opacity="0.2"/>
+  <path d="M285 205 L305 215 M305 205 L285 215" stroke="#EF4444" stroke-width="2"/>
+  <text x="295" y="230" text-anchor="middle" fill="#EF4444" font-family="Arial" font-size="8">DELETE</text>
+  
+  <!-- Security badges -->
+  <circle cx="50" cy="80" r="20" fill="#10B981" opacity="0.2"/>
+  <path d="M40 80 Q50 70 60 80 Q50 90 40 80" fill="#10B981"/>
+  <text x="50" y="84" text-anchor="middle" fill="#FFFFFF" font-family="Arial" font-size="8">✓</text>
+  
+  <circle cx="350" cy="80" r="20" fill="#10B981" opacity="0.2"/>
+  <rect x="345" y="75" width="10" height="10" rx="2" fill="#10B981"/>
+  <path d="M340 75 Q340 70 350 70 Q360 70 360 75" stroke="#10B981" stroke-width="2" fill="none"/>
+  
+  <!-- Firewall representation -->
+  <rect x="30" y="150" width="4" height="30" fill="#F59E0B"/>
+  <rect x="40" y="145" width="4" height="40" fill="#F59E0B"/>
+  <rect x="50" y="140" width="4" height="50" fill="#F59E0B"/>
+  <rect x="60" y="150" width="4" height="30" fill="#F59E0B"/>
+  
+  <!-- Network security -->
+  <circle cx="350" cy="200" r="3" fill="#06B6D4"/>
+  <circle cx="330" cy="180" r="3" fill="#06B6D4"/>
+  <circle cx="370" cy="180" r="3" fill="#06B6D4"/>
+  <circle cx="350" cy="160" r="3" fill="#06B6D4"/>
+  
+  <line x1="350" y1="197" x2="330" y2="183" stroke="#06B6D4" stroke-width="1"/>
+  <line x1="350" y1="197" x2="370" y2="183" stroke="#06B6D4" stroke-width="1"/>
+  <line x1="330" y1="183" x2="350" y2="163" stroke="#06B6D4" stroke-width="1"/>
+  <line x1="370" y1="183" x2="350" y2="163" stroke="#06B6D4" stroke-width="1"/>
+  
+  <!-- Security certificate -->
+  <rect x="120" y="240" width="40" height="30" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <circle cx="140" cy="250" r="5" fill="#10B981"/>
+  <path d="M137 250 L139 252 L143 248" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+  <text x="140" y="265" text-anchor="middle" fill="#10B981" font-family="Arial" font-size="6">CERT</text>
+  
+  <!-- Medical data protection -->
+  <rect x="200" y="240" width="30" height="20" rx="3" fill="#1E3A8A"/>
+  <rect x="210" y="235" width="10" height="10" rx="1" fill="#FFFFFF"/>
+  <rect x="213" y="238" width="4" height="4" fill="#EF4444"/>
+  <text x="215" y="265" text-anchor="middle" fill="#1E3A8A" font-family="Arial" font-size="6">HIPAA</text>
+</svg>

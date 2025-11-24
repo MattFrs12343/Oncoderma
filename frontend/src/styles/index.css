@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables CSS para temas */
+:root {
+  --primary: #1e293b;
+  --secondary: #3b82f6;
+  --accent: #06b6d4;
+  --background: #f8fafc;
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-600: #4b5563;
+  --green-600: #16a34a;
+  --red-600: #dc2626;
+}
+
+:root[data-theme="dark"] {
+  --primary: #e2e8f0;
+  --secondary: #3b82f6;
+  --accent: #06b6d4;
+  --background: #0f172a;
+  --white: #1e293b;
+  --gray-50: #1e293b;
+  --gray-600: #94a3b8;
+  --green-600: #22c55e;
+  --red-600: #ef4444;
+}
+
+html {
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:root[data-theme="dark"] nav body {
+  color: #e2e8f0;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Componentes personalizados */
+@layer components {
+  .btn-primary {
+    @apply bg-secondary text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:bg-primary;
+  }
+
+  .btn-secondary {
+    @apply bg-accent text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:bg-cyan-500/80;
+  }
+
+  .input-field {
+    @apply w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-primary transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent;
+  }
+
+  :root[data-theme="dark"] .input-field {
+    @apply border-slate-600 text-slate-200;
+  }
+
+  :root[data-theme="dark"] nav .input-field {
+    @apply text-slate-200;
+  }
+
+  .card {
+    @apply bg-white p-6 rounded-xl transition-all duration-300 cursor-pointer;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .card:hover {
+    @apply transform -translate-y-1;
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    border-color: rgba(6, 182, 212, 0.3);
+  }
+
+  :root[data-theme="dark"] .card {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  :root[data-theme="dark"] .card:hover {
+    @apply transform -translate-y-1;
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    border-color: rgba(6, 182, 212, 0.5);
+  }
+}
+
+/* Estilos para tema oscuro en navegación */
+:root[data-theme="dark"] button:hover {
+  background-color: rgba(226, 232, 240, 0.1) !important;
+}
+
+:root[data-theme="dark"] nav {
+  background-color: #0f172a !important;
+}
+
+:root[data-theme="dark"] nav .text-primary {
+  color: #e2e8f0 !important;
+}
+
+:root[data-theme="dark"] nav .text-gray-600 {
+  color: #94a3b8 !important;
+}
+
+:root[data-theme="dark"] nav .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+/* Ajustes de gradientes en tema oscuro */
+:root[data-theme="dark"] .from-green-50 {
+  background: linear-gradient(to right, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.25)) !important;
+}
+
+:root[data-theme="dark"] .from-purple-50 {
+  background: linear-gradient(to right, rgba(147, 51, 234, 0.15), rgba(147, 51, 234, 0.25)) !important;
+}
+
+:root[data-theme="dark"] .from-orange-50 {
+  background: linear-gradient(to right, rgba(249, 115, 22, 0.15), rgba(249, 115, 22, 0.25)) !important;
+}
+
+:root[data-theme="dark"] .from-blue-50 {
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.25)) !important;
+}
+
+:root[data-theme="dark"] .from-red-50 {
+  background: linear-gradient(to right, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.25)) !important;
+}
+
+:root[data-theme="dark"] .from-cyan-50 {
+  background: linear-gradient(to right, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.25)) !important;
+}
+
+:root[data-theme="dark"] .from-indigo-50 {
+  background: linear-gradient(to right, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.25)) !important;
+}
+
+/* Ajustes de colores de fondo en tema oscuro */
+:root[data-theme="dark"] .bg-white\/50 {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+}
+
+:root[data-theme="dark"] .bg-gray-50 {
+  background-color: var(--gray-50) !important;
+}
+
+:root[data-theme="dark"] .bg-gray-100 {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+}
+
+/* Mostrar/ocultar elementos según el tema */
+:root[data-theme="dark"] .dark\:hidden {
+  display: none !important;
+}
+
+:root[data-theme="dark"] .dark\:block {
+  display: block !important;
+}
+
+:root[data-theme="light"] .dark\:hidden {
+  display: block !important;
+}
+
+:root[data-theme="light"] .dark\:block {
+  display: none !important;
+}

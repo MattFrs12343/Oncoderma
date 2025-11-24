@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#0f172a">
+    <title>Test Responsividad Móvil - OncoDerma</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .device-info {
+            background: #e0f2fe;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .device-info h2 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #0369a1;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .info-item {
+            background: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .test-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            margin-bottom: 1.5rem;
+        }
+
+        .test-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .test-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .test-card:hover {
+            border-color: #0ea5e9;
+            transform: translateY(-2px);
+        }
+
+        .test-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .test-result {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .test-result.pass {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .test-result.fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .test-result.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        button {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            min-height: 44px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: #0284c7;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .touch-target-test {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .touch-target {
+            width: 44px;
+            height: 44px;
+            background: #0ea5e9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .touch-target:active {
+            transform: scale(0.95);
+            background: #0284c7;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .status-indicator.pass {
+            background: #22c55e;
+        }
+
+        .status-indicator.fail {
+            background: #ef4444;
+        }
+
+        .status-indicator.warning {
+            background: #f59e0b;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            .test-section h2 {
+                font-size: 1.125rem;
+            }
+
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .test-section {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.125rem;
+            }
+
+            .test-section h2 {
+                font-size: 1rem;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Test de Responsividad Móvil</h1>
+            <p>OncoDerma - Verificación de Mejoras Móviles</p>
+        </div>
+
+        <div class="device-info">
+            <h2>Información del Dispositivo</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Ancho</div>
+                    <div class="info-value" id="screenWidth">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Alto</div>
+                    <div class="info-value" id="screenHeight">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Orientación</div>
+                    <div class="info-value" id="orientation">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Tipo</div>
+                    <div class="info-value" id="deviceType">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Touch</div>
+                    <div class="info-value" id="touchSupport">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Pixel Ratio</div>
+                    <div class="info-value" id="pixelRatio">-</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Tests de Responsividad</h2>
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>Viewport</h3>
+                    <div class="test-result" id="viewportTest">
+                        <span class="status-indicator"></span>
+                        <span>Verificando...</span>
+                    </div>
+                </div>
+                <div class="test-card">
+                    <h3>Touch Targets</h3>
+                    <div class="test-result" id="touchTest">
+                        <span class="status-indicator"></span>
+                        <span>Verificando...</span>
+                    </div>
+                </div>
+                <div class="test-card">
+                    <h3>Font Size</h3>
+                    <div class="test-result" id="fontTest">
+                        <span class="status-indicator"></span>
+                        <span>Verificando...</span>
+                    </div>
+                </div>
+                <div class="test-card">
+                    <h3>Orientación</h3>
+                    <div class="test-result" id="orientationTest">
+                        <span class="status-indicator"></span>
+                        <span>Verificando...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test de Touch Targets (44x44px)</h2>
+            <p style="margin-bottom: 1rem; color: #64748b;">Toca cada botón para verificar que sea fácil de presionar:</p>
+            <div class="touch-target-test">
+                <div class="touch-target" onclick="this.style.background='#22c55e'">1</div>
+                <div class="touch-target" onclick="this.style.background='#22c55e'">2</div>
+                <div class="touch-target" onclick="this.style.background='#22c55e'">3</div>
+                <div class="touch-target" onclick="this.style.background='#22c55e'">4</div>
+                <div class="touch-target" onclick="this.style.background='#22c55e'">5</div>
+                <div class="touch-target" onclick="this.style.background='#22c55e'">6</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test de Formularios</h2>
+            <p style="margin-bottom: 1rem; color: #64748b;">Verifica que los inputs no causen zoom en iOS:</p>
+            <input type="text" placeholder="Nombre (16px font-size)" id="testInput">
+            <input type="number" placeholder="Edad" min="1" max="120">
+            <select>
+                <option value="">Selecciona una opción</option>
+                <option value="1">Opción 1</option>
+                <option value="2">Opción 2</option>
+                <option value="3">Opción 3</option>
+            </select>
+            <button onclick="alert('✅ Botón funcionando correctamente!')">Probar Botón</button>
+        </div>
+
+        <div class="test-section">
+            <h2>Recomendaciones</h2>
+            <div id="recommendations"></div>
+        </div>
+    </div>
+
+    <script>
+        // Actualizar información del dispositivo
+        function updateDeviceInfo() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const orientation = width > height ? 'Landscape' : 'Portrait';
+            const pixelRatio = window.devicePixelRatio || 1;
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            
+            let deviceType = 'Desktop';
+            if (width <= 480) deviceType = 'Móvil Pequeño';
+            else if (width <= 768) deviceType = 'Móvil';
+            else if (width <= 1024) deviceType = 'Tablet';
+            
+            document.getElementById('screenWidth').textContent = width + 'px';
+            document.getElementById('screenHeight').textContent = height + 'px';
+            document.getElementById('orientation').textContent = orientation;
+            document.getElementById('deviceType').textContent = deviceType;
+            document.getElementById('touchSupport').textContent = hasTouch ? 'Sí' : 'No';
+            document.getElementById('pixelRatio').textContent = pixelRatio.toFixed(2);
+            
+            runTests(width, height, hasTouch);
+        }
+
+        // Ejecutar tests
+        function runTests(width, height, hasTouch) {
+            // Test de viewport
+            const viewportTest = document.getElementById('viewportTest');
+            const viewportIndicator = viewportTest.querySelector('.status-indicator');
+            const viewportText = viewportTest.querySelector('span:last-child');
+            
+            if (width >= 320 && width <= 1920) {
+                viewportTest.className = 'test-result pass';
+                viewportIndicator.className = 'status-indicator pass';
+                viewportText.textContent = '✓ Viewport correcto';
+            } else {
+                viewportTest.className = 'test-result warning';
+                viewportIndicator.className = 'status-indicator warning';
+                viewportText.textContent = '⚠ Viewport inusual';
+            }
+
+            // Test de touch targets
+            const touchTest = document.getElementById('touchTest');
+            const touchIndicator = touchTest.querySelector('.status-indicator');
+            const touchText = touchTest.querySelector('span:last-child');
+            
+            if (hasTouch) {
+                touchTest.className = 'test-result pass';
+                touchIndicator.className = 'status-indicator pass';
+                touchText.textContent = '✓ Touch soportado';
+            } else {
+                touchTest.className = 'test-result warning';
+                touchIndicator.className = 'status-indicator warning';
+                touchText.textContent = '⚠ Sin touch (mouse)';
+            }
+
+            // Test de font size
+            const fontTest = document.getElementById('fontTest');
+            const fontIndicator = fontTest.querySelector('.status-indicator');
+            const fontText = fontTest.querySelector('span:last-child');
+            const inputFontSize = window.getComputedStyle(document.getElementById('testInput')).fontSize;
+            const fontSize = parseInt(inputFontSize);
+            
+            if (fontSize >= 16) {
+                fontTest.className = 'test-result pass';
+                fontIndicator.className = 'status-indicator pass';
+                fontText.textContent = `✓ ${fontSize}px (no zoom iOS)`;
+            } else {
+                fontTest.className = 'test-result fail';
+                fontIndicator.className = 'status-indicator fail';
+                fontText.textContent = `✗ ${fontSize}px (causará zoom)`;
+            }
+
+            // Test de orientación
+            const orientationTest = document.getElementById('orientationTest');
+            const orientationIndicator = orientationTest.querySelector('.status-indicator');
+            const orientationText = orientationTest.querySelector('span:last-child');
+            
+            if (width > height) {
+                orientationTest.className = 'test-result pass';
+                orientationIndicator.className = 'status-indicator pass';
+                orientationText.textContent = '✓ Landscape';
+            } else {
+                orientationTest.className = 'test-result pass';
+                orientationIndicator.className = 'status-indicator pass';
+                orientationText.textContent = '✓ Portrait';
+            }
+
+            // Generar recomendaciones
+            generateRecommendations(width, height, hasTouch, fontSize);
+        }
+
+        // Generar recomendaciones
+        function generateRecommendations(width, height, hasTouch, fontSize) {
+            const recommendations = document.getElementById('recommendations');
+            let html = '<ul style="list-style: none; padding: 0;">';
+
+            if (width <= 480) {
+                html += '<li style="padding: 0.5rem; background: #fef3c7; border-radius: 6px; margin-bottom: 0.5rem;">⚠️ Pantalla muy pequeña: Verifica que todo sea legible</li>';
+            }
+
+            if (!hasTouch) {
+                html += '<li style="padding: 0.5rem; background: #e0f2fe; border-radius: 6px; margin-bottom: 0.5rem;">ℹ️ Sin touch: Prueba en un dispositivo real</li>';
+            }
+
+            if (fontSize < 16) {
+                html += '<li style="padding: 0.5rem; background: #fee2e2; border-radius: 6px; margin-bottom: 0.5rem;">❌ Font-size < 16px: Causará zoom en iOS</li>';
+            }
+
+            if (width > 768 && width < 1024) {
+                html += '<li style="padding: 0.5rem; background: #dcfce7; border-radius: 6px; margin-bottom: 0.5rem;">✅ Tablet: Verifica grid de 2 columnas</li>';
+            }
+
+            if (width <= 768) {
+                html += '<li style="padding: 0.5rem; background: #dcfce7; border-radius: 6px; margin-bottom: 0.5rem;">✅ Móvil: Verifica que botones sean de ancho completo</li>';
+            }
+
+            html += '</ul>';
+            recommendations.innerHTML = html;
+        }
+
+        // Actualizar al cargar y al redimensionar
+        updateDeviceInfo();
+        window.addEventListener('resize', updateDeviceInfo);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateDeviceInfo, 100);
+        });
+
+        // Log de información útil
+        console.log('📱 Test de Responsividad Móvil - OncoDerma');
+        console.log('Ancho:', window.innerWidth);
+        console.log('Alto:', window.innerHeight);
+        console.log('User Agent:', navigator.userAgent);
+        console.log('Touch:', 'ontouchstart' in window);
+        console.log('Pixel Ratio:', window.devicePixelRatio);
+    </script>
+</body>
+</html>

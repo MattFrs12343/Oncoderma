@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test FileHashService</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            border-radius: 4px;
+        }
+        .test-section.error {
+            border-left-color: #f44336;
+        }
+        .test-section.warning {
+            border-left-color: #ff9800;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px 10px 0;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .info {
+            color: #666;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.success {
+            background: #4CAF50;
+            color: white;
+        }
+        .status.error {
+            background: #f44336;
+            color: white;
+        }
+        .status.warning {
+            background: #ff9800;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test FileHashService</h1>
+        
+        <div class="test-section">
+            <h3>Información del Navegador</h3>
+            <div id="browserInfo"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Seleccionar Archivo para Probar</h3>
+            <input type="file" id="fileInput" accept="image/*">
+            <button onclick="testHash()">Generar Hash</button>
+            <button onclick="testMultipleTimes()">Probar 3 veces (verificar consistencia)</button>
+            <div id="hashResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Logs de Consola</h3>
+            <p class="info">Abre la consola del navegador (F12) para ver logs detallados</p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Importar FileHashService
+        import { fileHashService } from './src/utils/fileHashService.js';
+
+        // Mostrar información del navegador
+        function displayBrowserInfo() {
+            const capabilities = fileHashService.getCapabilities();
+            const info = document.getElementById('browserInfo');
+            
+            let html = '<div>';
+            html += `<p><strong>Web Crypto API:</strong> ${capabilities.webCryptoAvailable ? '<span class="status success">Disponible</span>' : '<span class="status error">No disponible</span>'}</p>`;
+            html += `<p><strong>FileReader API:</strong> ${capabilities.fileReaderAvailable ? '<span class="status success">Disponible</span>' : '<span class="status error">No disponible</span>'}</p>`;
+            html += `<p><strong>ArrayBuffer:</strong> ${capabilities.arrayBufferAvailable ? '<span class="status success">Disponible</span>' : '<span class="status error">No disponible</span>'}</p>`;
+            html += `<p><strong>Método Recomendado:</strong> <span class="status ${capabilities.recommendedMethod === 'crypto' ? 'success' : 'warning'}">${capabilities.recommendedMethod}</span></p>`;
+            html += `<p class="info">Protocolo: ${window.location.protocol}</p>`;
+            html += `<p class="info">Host: ${window.location.host}</p>`;
+            html += '</div>';
+            
+            info.innerHTML = html;
+        }
+
+        // Función para probar hash
+        window.testHash = async function() {
+            const fileInput = document.getElementById('fileInput');
+            const resultDiv = document.getElementById('hashResult');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                resultDiv.innerHTML = '<p class="info" style="color: red;">Por favor selecciona un archivo primero</p>';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            resultDiv.innerHTML = '<p class="info">Generando hash...</p>';
+
+            try {
+                console.log('=== Iniciando test de hash ===');
+                const startTime = performance.now();
+                
+                const result = await fileHashService.generateHash(file);
+                
+                const endTime = performance.now();
+                const duration = (endTime - startTime).toFixed(2);
+
+                let html = '<div class="result">';
+                html += `<p><strong>✅ Hash generado exitosamente</strong></p>`;
+                html += `<p><strong>Método:</strong> ${result.method}</p>`;
+                html += `<p><strong>Hash:</strong> ${result.hash}</p>`;
+                html += `<p><strong>Tiempo:</strong> ${duration}ms</p>`;
+                html += `<p><strong>Archivo:</strong> ${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>`;
+                html += '</div>';
+
+                resultDiv.innerHTML = html;
+                console.log('=== Test completado ===', result);
+            } catch (error) {
+                console.error('=== Error en test ===', error);
+                resultDiv.innerHTML = `<div class="result" style="background: #ffebee;"><p><strong>❌ Error:</strong> ${error.message}</p></div>`;
+            }
+        };
+
+        // Función para probar múltiples veces
+        window.testMultipleTimes = async function() {
+            const fileInput = document.getElementById('fileInput');
+            const resultDiv = document.getElementById('hashResult');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                resultDiv.innerHTML = '<p class="info" style="color: red;">Por favor selecciona un archivo primero</p>';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            resultDiv.innerHTML = '<p class="info">Generando hashes múltiples veces...</p>';
+
+            try {
+                console.log('=== Iniciando test de consistencia (3 veces) ===');
+                const hashes = [];
+                
+                for (let i = 0; i < 3; i++) {
+                    const result = await fileHashService.generateHash(file);
+                    hashes.push(result);
+                    console.log(`Intento ${i + 1}:`, result);
+                }
+
+                const allSame = hashes.every(h => h.hash === hashes[0].hash);
+                const allSameMethod = hashes.every(h => h.method === hashes[0].method);
+
+                let html = '<div class="result">';
+                html += `<p><strong>${allSame ? '✅' : '❌'} Consistencia de Hash:</strong> ${allSame ? 'Todos iguales' : 'Diferentes'}</p>`;
+                html += `<p><strong>${allSameMethod ? '✅' : '⚠️'} Método Usado:</strong> ${allSameMethod ? 'Consistente' : 'Varía'}</p>`;
+                html += '<p><strong>Hashes generados:</strong></p>';
+                hashes.forEach((h, i) => {
+                    html += `<p style="font-size: 12px;">${i + 1}. [${h.method}] ${h.hash}</p>`;
+                });
+                html += '</div>';
+
+                resultDiv.innerHTML = html;
+                console.log('=== Test de consistencia completado ===');
+            } catch (error) {
+                console.error('=== Error en test de consistencia ===', error);
+                resultDiv.innerHTML = `<div class="result" style="background: #ffebee;"><p><strong>❌ Error:</strong> ${error.message}</p></div>`;
+            }
+        };
+
+        // Inicializar
+        displayBrowserInfo();
+        console.log('🧪 Test FileHashService cargado. Selecciona un archivo y haz clic en "Generar Hash"');
+    </script>
+</body>
+</html>

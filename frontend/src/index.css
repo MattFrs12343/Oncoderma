@@ -4344,6 +4344,11 @@ body {
   .animate-results-exit-mobile {
     animation: none !important;
   }
+  
+  /* Disable SVG circle animations */
+  circle {
+    transition: none !important;
+  }
 }
 
 /* Screen reader only utility */
@@ -4357,4 +4362,14 @@ body {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

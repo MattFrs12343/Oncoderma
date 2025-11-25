@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useTheme } from '../../contexts/ThemeContext'
+import './HistorySection.css'
 
 // Mock data
 const mockHistory = [
@@ -84,63 +85,56 @@ const MiniDonutChart = ({ result, index, theme, isPrimary = false }) => {
     ? ['#f97316', '#f59e0b'] // Naranja/Amarillo para maligno
     : ['#10b981', '#14b8a6'] // Verde/Turquesa para benigno
   
-  const radius = 35
-  const circumference = 2 * Math.PI * radius
-  const strokeDashoffset = circumference - (result.prob * circumference)
+  // Usar viewBox 36x36 con r=15.9155 para cálculos más fáciles
+  const radius = 15.9155
+  const circumference = 2 * Math.PI * radius // ≈ 100
+  const strokeDasharray = circumference
+  const strokeDashoffset = circumference * (1 - result.prob)
   
   return (
-    <div className="flex flex-col items-center relative min-w-[60px] sm:min-w-[70px]">
-      {/* Badge de diagnóstico principal */}
+    <div className="mini-donut-container">
+      {/* Badge de diagnóstico principal - Solo en desktop */}
       {isPrimary && (
-        <div className={`
-          absolute -top-1.5 sm:-top-2 left-1/2 transform -translate-x-1/2 z-10
-          px-1.5 sm:px-2 py-0.5 rounded-full text-[7px] sm:text-[9px] font-bold whitespace-nowrap
-          ${isHighRisk 
-            ? 'bg-orange-500 text-white' 
-            : 'bg-green-500 text-white'
-          }
-        `}>
+        <div className={`mini-donut-badge ${isHighRisk ? 'malignant' : 'benign'}`}>
           Principal
         </div>
       )}
       
       {/* Dona */}
-      <div className={`
-        relative w-14 h-14 sm:w-20 sm:h-20
-        ${isPrimary ? 'ring-1 sm:ring-2 ring-offset-1 sm:ring-offset-2 rounded-full' : ''}
-        ${isPrimary && isHighRisk ? 'ring-orange-400' : ''}
-        ${isPrimary && !isHighRisk ? 'ring-green-400' : ''}
-        ${isPrimary && theme === 'dark' ? 'ring-offset-[#0f1419]' : 'ring-offset-gray-50'}
-      `}>
+      <div 
+        className={`mini-donut-chart ${isPrimary ? 'primary' : ''} ${isHighRisk ? 'malignant' : 'benign'} ${theme === 'light' ? 'light' : ''}`}
+        style={{ willChange: 'opacity, transform' }}
+      >
         <svg 
-          viewBox="0 0 80 80" 
-          className={`
-            w-full h-full transform -rotate-90
-            ${isPrimary ? 'drop-shadow-md sm:drop-shadow-lg' : ''}
-          `}
+          viewBox="0 0 36 36" 
+          className={`mini-donut-svg ${isPrimary ? 'primary' : ''}`}
           preserveAspectRatio="xMidYMid meet"
+          role="img"
+          aria-label={`${percentage}% — ${info.name}`}
         >
           {/* Círculo de fondo */}
           <circle
-            cx="40"
-            cy="40"
+            cx="18"
+            cy="18"
             r={radius}
             stroke={theme === 'dark' ? '#1f2937' : '#e5e7eb'}
-            strokeWidth="6"
+            strokeWidth="3"
             fill="none"
           />
           {/* Círculo de progreso */}
           <circle
-            cx="40"
-            cy="40"
+            cx="18"
+            cy="18"
             r={radius}
             stroke={`url(#mini-gradient-${index})`}
-            strokeWidth="6"
+            strokeWidth="3"
             fill="none"
-            strokeDasharray={circumference}
+            strokeDasharray={strokeDasharray}
             strokeDashoffset={strokeDashoffset}
             strokeLinecap="round"
-            className="transition-all duration-1000 ease-out"
+            style={{
+              transition: 'stroke-dashoffset 600ms cubic-bezier(0.16, 1, 0.3, 1), stroke-dasharray 600ms cubic-bezier(0.16, 1, 0.3, 1)'
+            }}
           />
           <defs>
             <linearGradient id={`mini-gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
@@ -150,21 +144,15 @@ const MiniDonutChart = ({ result, index, theme, isPrimary = false }) => {
           </defs>
         </svg>
         {/* Porcentaje en el centro */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className={`
-            text-[10px] sm:text-sm font-black
-            ${theme === 'dark' ? 'text-white' : 'text-gray-900'}
-          `}>
+        <div className={`mini-donut-percentage ${theme === 'light' ? 'light' : ''}`}>
+          <span>
             {percentage}%
           </span>
         </div>
       </div>
       
       {/* Nombre de la enfermedad */}
-      <p className={`
-        text-[8px] sm:text-[10px] text-center mt-1 sm:mt-1.5 font-medium leading-tight max-w-[60px] sm:max-w-[70px] px-0.5
-        ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
-      `}>
+      <p className={`mini-donut-label ${theme === 'light' ? 'light' : ''}`}>
         {info.name}
       </p>
     </div>
@@ -176,26 +164,17 @@ const HistorySection = ({ historyHeaderRef }) => {
   const [isExpanded, setIsExpanded] = useState(true)
 
   return (
-    <div
-      className={`
-        rounded-xl border overflow-hidden
-        ${theme === 'dark' ? 'bg-[#1a2332] border-gray-700' : 'bg-white border-gray-200'}
-      `}
-    >
+    <div className={`history-section-container ${theme === 'light' ? 'light' : ''}`}>
       {/* Header */}
       <button
         ref={historyHeaderRef}
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`
-          w-full px-6 py-4 flex items-center justify-between
-          transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2
-          ${theme === 'dark' ? 'hover:bg-[#0f1419] focus:ring-offset-[#1a2332]' : 'hover:bg-gray-50 focus:ring-offset-white'}
-        `}
+        className={`history-section-header ${theme === 'light' ? 'light' : ''}`}
         aria-label="Historial de Análisis"
       >
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="history-header-content">
+          <div className="history-icon-container">
+            <svg className="history-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -204,24 +183,15 @@ const HistorySection = ({ historyHeaderRef }) => {
               />
             </svg>
           </div>
-          <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+          <h3 className={`history-title ${theme === 'light' ? 'light' : ''}`}>
             Historial de Análisis
           </h3>
-          <span
-            className={`
-              text-xs px-2 py-1 rounded-full font-medium
-              ${theme === 'dark' ? 'bg-cyan-500/20 text-cyan-400' : 'bg-cyan-100 text-cyan-700'}
-            `}
-          >
+          <span className={`history-badge ${theme === 'light' ? 'light' : ''}`}>
             Datos mock
           </span>
         </div>
         <svg
-          className={`
-            w-5 h-5 transition-transform duration-300
-            ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
-            ${isExpanded ? 'rotate-180' : ''}
-          `}
+          className={`history-chevron ${theme === 'light' ? 'light' : ''} ${isExpanded ? 'expanded' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -231,81 +201,55 @@ const HistorySection = ({ historyHeaderRef }) => {
       </button>
 
       {/* Content */}
-      <div
-        className={`
-          transition-all duration-300 overflow-hidden
-          ${isExpanded ? 'max-h-[2000px]' : 'max-h-0'}
-        `}
-      >
-        <div className="px-6 pb-4">
-          <div className="space-y-3">
+      <div className={`history-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
+        <div className="history-items-container">
+          <div className="history-items-list">
             {mockHistory.map((item, itemIndex) => (
               <div
                 key={item.id}
-                className={`
-                  p-3 sm:p-4 rounded-lg border cursor-pointer
-                  transition-all duration-200
-                  ${
-                    theme === 'dark'
-                      ? 'bg-[#0f1419] border-gray-700 hover:border-cyan-500/50'
-                      : 'bg-gray-50 border-gray-200 hover:border-cyan-500/50'
-                  }
-                `}
+                className={`history-item-card ${theme === 'light' ? 'light' : ''}`}
+                title={`${item.result} - ${item.age} años, ${item.sex}, ${item.location}`}
               >
                 {/* Layout responsive: columna en móvil, fila en desktop */}
-                <div className="flex flex-col lg:flex-row lg:items-start gap-3 lg:gap-4">
+                <div className="history-item-layout">
                   {/* Información principal (izquierda) */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div
-                        className={`
-                          w-2 h-2 rounded-full flex-shrink-0
-                          ${item.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500'}
-                        `}
-                      />
-                      <span className={`text-[10px] sm:text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <div className="history-item-main">
+                    {/* Fecha y hora */}
+                    <div className="history-item-date-row">
+                      <div className={`history-status-dot ${item.status === 'completed' ? 'completed' : 'pending'}`} />
+                      <span className={`history-date-text ${theme === 'light' ? 'light' : ''}`}>
                         {item.date} • {item.time}
+                      </span>
+                      {/* Porcentaje principal en móvil - destacado */}
+                      <span className={`history-probability-mobile ${theme === 'light' ? 'light' : ''}`}>
+                        {item.probability}%
                       </span>
                     </div>
 
-                    <div className="space-y-1">
-                      {/* Diagnóstico principal con porcentaje pegado */}
-                      <div className="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
-                        <p className={`text-xs sm:text-sm font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    {/* Diagnóstico principal */}
+                    <div className="history-diagnosis-section">
+                      <div className="history-diagnosis-row">
+                        <p className={`history-diagnosis-name ${theme === 'light' ? 'light' : ''}`}>
                           {item.result}
                         </p>
-                        <span
-                          className={`
-                            text-xs sm:text-sm font-bold whitespace-nowrap
-                            ${theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'}
-                          `}
-                        >
+                        {/* Porcentaje en desktop */}
+                        <span className={`history-probability-desktop ${theme === 'light' ? 'light' : ''}`}>
                           {item.probability}%
                         </span>
                       </div>
-                      <p className={`text-[10px] sm:text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>
-                        {item.age} años • {item.sex} • {item.location}
-                      </p>
                     </div>
+
                   </div>
 
                   {/* Top 3 Diagnósticos con donas (derecha) */}
-                  <div className={`
-                    flex flex-col items-center lg:items-end w-full lg:w-auto
-                    pt-3 lg:pt-0 border-t lg:border-t-0 lg:border-l lg:pl-4
-                    ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}
-                  `}>
-                    {/* Título explicativo */}
-                    <p className={`
-                      text-[8px] sm:text-[10px] font-medium mb-1.5 sm:mb-2 text-center lg:text-right
-                      ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
-                      leading-tight px-1
-                    `}>
+                  <div className={`history-top3-section ${theme === 'light' ? 'light' : ''}`}>
+                    {/* Título explicativo - Oculto en móvil para ahorrar espacio */}
+                    <p className={`history-top3-title ${theme === 'light' ? 'light' : ''}`}>
                       Probabilidades estimadas por la IA (Top 3 diagnósticos)
                     </p>
                     
-                    {/* Donas */}
-                    <div className="flex items-start justify-center lg:justify-end gap-1.5 sm:gap-3 lg:gap-4 mb-1.5 sm:mb-2 w-full overflow-x-auto px-1">
+                    {/* Donas - Grid 3 columnas en móvil, flex en desktop */}
+                    <div className="history-donuts-grid">
                       {item.top3.map((result, index) => (
                         <MiniDonutChart 
                           key={`${itemIndex}-${index}`}
@@ -318,16 +262,16 @@ const HistorySection = ({ historyHeaderRef }) => {
                     </div>
                     
                     {/* Leyenda de colores */}
-                    <div className="flex items-center gap-2 sm:gap-3 text-[8px] sm:text-[10px] font-medium">
-                      <div className="flex items-center gap-1">
-                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-500"></div>
-                        <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
+                    <div className="history-legend">
+                      <div className="history-legend-item">
+                        <div className="history-legend-dot benign"></div>
+                        <span className={`history-legend-text ${theme === 'light' ? 'light' : ''}`}>
                           Benigno
                         </span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-orange-500"></div>
-                        <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
+                      <div className="history-legend-item">
+                        <div className="history-legend-dot malignant"></div>
+                        <span className={`history-legend-text ${theme === 'light' ? 'light' : ''}`}>
                           Maligno
                         </span>
                       </div>

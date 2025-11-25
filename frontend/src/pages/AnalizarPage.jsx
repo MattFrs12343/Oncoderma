@@ -12,6 +12,7 @@ import AnimatedImageUploadBox from '../components/ui/AnimatedImageUploadBox'
 import AnimatedResultsSection from '../components/ui/AnimatedResultsSection'
 import HistorySection from '../components/ui/HistorySection'
 import Alert from '../components/Alert'
+import '../components/ui/HistorySection.css' // Importar CSS para la nueva sección
 
 const AnalizarPage = () => {
   const { token } = useAuth()
@@ -104,6 +105,58 @@ const AnalizarPage = () => {
     { value: 'lower extremity', label: 'Extremidad inferior' },
     { value: 'palms/soles', label: 'Palmas/Plantas' },
     { value: 'oral/genital', label: 'Oral/Genital' },
+  ]
+
+  // Mock data para historial
+  const mockHistory = [
+    {
+      id: 1,
+      date: '2024-01-15',
+      time: '14:30',
+      age: 45,
+      sex: 'Femenino',
+      location: 'Torso anterior',
+      result: 'Nevus (lunar benigno)',
+      probability: 89.5,
+      status: 'completed',
+      top3: [
+        { class: 'NV', prob: 0.895 },
+        { class: 'BKL', prob: 0.078 },
+        { class: 'MEL', prob: 0.027 }
+      ]
+    },
+    {
+      id: 2,
+      date: '2024-01-10',
+      time: '10:15',
+      age: 52,
+      sex: 'Masculino',
+      location: 'Cabeza/Cuello',
+      result: 'Queratosis benigna',
+      probability: 76.3,
+      status: 'completed',
+      top3: [
+        { class: 'BKL', prob: 0.763 },
+        { class: 'NV', prob: 0.182 },
+        { class: 'BCC', prob: 0.055 }
+      ]
+    },
+    {
+      id: 3,
+      date: '2024-01-05',
+      time: '16:45',
+      age: 38,
+      sex: 'Femenino',
+      location: 'Extremidad superior',
+      result: 'Nevus (lunar benigno)',
+      probability: 92.1,
+      status: 'completed',
+      top3: [
+        { class: 'NV', prob: 0.921 },
+        { class: 'BKL', prob: 0.065 },
+        { class: 'MEL', prob: 0.014 }
+      ]
+    },
   ]
 
   // Mapeo de clases a nombres legibles y detalles
@@ -468,33 +521,171 @@ const AnalizarPage = () => {
             >
               <HistorySection />
             </AnimatedResultsSection>
+
+            {/* 4. Nueva Sección: Historial de Análisis Completo */}
+            <div className={`history-section-container ${theme === 'light' ? 'light' : ''}`}>
+              {/* Header de la nueva sección */}
+              <div className={`history-section-header ${theme === 'light' ? 'light' : ''}`} style={{ cursor: 'default' }}>
+                <div className="history-header-content">
+                  <div className="history-icon-container">
+                    <svg className="history-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className={`history-title ${theme === 'light' ? 'light' : ''}`}>
+                    Historial de Análisis
+                  </h3>
+                  <span className={`history-badge ${theme === 'light' ? 'light' : ''}`}>
+                    Datos mock
+                  </span>
+                </div>
+              </div>
+
+              {/* Contenido del historial */}
+              <div className="history-items-container">
+                <div className="history-items-list">
+                  {mockHistory.map((item, itemIndex) => (
+                    <div
+                      key={item.id}
+                      className={`history-item-card ${theme === 'light' ? 'light' : ''}`}
+                    >
+                      {/* Layout responsive */}
+                      <div className="history-item-layout">
+                        {/* Información principal */}
+                        <div className="history-item-main">
+                          {/* Fecha y hora */}
+                          <div className="history-item-date-row">
+                            <div className={`history-status-dot ${item.status === 'completed' ? 'completed' : 'pending'}`} />
+                            <span className={`history-date-text ${theme === 'light' ? 'light' : ''}`}>
+                              {item.date} • {item.time}
+                            </span>
+                            <span className={`history-probability-mobile ${theme === 'light' ? 'light' : ''}`}>
+                              {item.probability}%
+                            </span>
+                          </div>
+
+                          {/* Diagnóstico principal */}
+                          <div className="history-diagnosis-section">
+                            <div className="history-diagnosis-row">
+                              <p className={`history-diagnosis-name ${theme === 'light' ? 'light' : ''}`}>
+                                {item.result}
+                              </p>
+                              <span className={`history-probability-desktop ${theme === 'light' ? 'light' : ''}`}>
+                                {item.probability}%
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Datos del paciente */}
+                          <p className={`history-patient-info ${theme === 'light' ? 'light' : ''}`}>
+                            {item.age} años • {item.sex} • {item.location}
+                          </p>
+                        </div>
+
+                        {/* Top 3 Diagnósticos */}
+                        <div className={`history-top3-section ${theme === 'light' ? 'light' : ''}`}>
+                          <p className={`history-top3-title ${theme === 'light' ? 'light' : ''}`}>
+                            Probabilidades estimadas por la IA (Top 3 diagnósticos)
+                          </p>
+                          
+                          <div className="history-donuts-grid">
+                            {item.top3.map((result, index) => {
+                              const info = diseaseInfo[result.class]
+                              const isHighRisk = info.status === 'Maligno'
+                              const percentage = (result.prob * 100).toFixed(1)
+                              const colors = isHighRisk ? ['#f97316', '#f59e0b'] : ['#10b981', '#14b8a6']
+                              const radius = 15.9155
+                              const circumference = 2 * Math.PI * radius
+                              const strokeDashoffset = circumference * (1 - result.prob)
+
+                              return (
+                                <div key={`${itemIndex}-${index}`} className="mini-donut-container">
+                                  {index === 0 && (
+                                    <div className={`mini-donut-badge ${isHighRisk ? 'malignant' : 'benign'}`}>
+                                      Principal
+                                    </div>
+                                  )}
+                                  <div className={`mini-donut-chart ${index === 0 ? 'primary' : ''} ${isHighRisk ? 'malignant' : 'benign'} ${theme === 'light' ? 'light' : ''}`}>
+                                    <svg viewBox="0 0 36 36" className={`mini-donut-svg ${index === 0 ? 'primary' : ''}`}>
+                                      <circle cx="18" cy="18" r={radius} stroke={theme === 'dark' ? '#1f2937' : '#e5e7eb'} strokeWidth="3" fill="none" />
+                                      <circle
+                                        cx="18" cy="18" r={radius}
+                                        stroke={`url(#gradient-${itemIndex}-${index})`}
+                                        strokeWidth="3" fill="none"
+                                        strokeDasharray={circumference}
+                                        strokeDashoffset={strokeDashoffset}
+                                        strokeLinecap="round"
+                                      />
+                                      <defs>
+                                        <linearGradient id={`gradient-${itemIndex}-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                                          <stop offset="0%" stopColor={colors[0]} />
+                                          <stop offset="100%" stopColor={colors[1]} />
+                                        </linearGradient>
+                                      </defs>
+                                    </svg>
+                                    <div className={`mini-donut-percentage ${theme === 'light' ? 'light' : ''}`}>
+                                      <span>{percentage}%</span>
+                                    </div>
+                                  </div>
+                                  <p className={`mini-donut-label ${theme === 'light' ? 'light' : ''}`}>
+                                    {info.name}
+                                  </p>
+                                </div>
+                              )
+                            })}
+                          </div>
+                          
+                          <div className="history-legend">
+                            <div className="history-legend-item">
+                              <div className="history-legend-dot benign"></div>
+                              <span className={`history-legend-text ${theme === 'light' ? 'light' : ''}`}>Benigno</span>
+                            </div>
+                            <div className="history-legend-item">
+                              <div className="history-legend-dot malignant"></div>
+                              <span className={`history-legend-text ${theme === 'light' ? 'light' : ''}`}>Maligno</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
-        {/* STEP 3: Resultados del Análisis */}
+        {/* STEP 3: Resultados del Análisis - OPTIMIZADO: Layout compacto sin scroll */}
         {currentStep === 2 && results && (
-          <div className="max-w-5xl mx-auto space-y-6 animate-fade-in-up">
+          <div className="max-w-5xl mx-auto space-y-4 animate-fade-in-up" style={{ maxHeight: 'calc(100vh - 140px)', display: 'flex', flexDirection: 'column' }}>
             {/* HISTORIAL DE ANÁLISIS */}
-            <HistorySection />
+            <div style={{ flex: 1, minHeight: 0 }}>
+              <HistorySection />
+            </div>
 
-            {/* Botones de Acción */}
+            {/* Botones de Acción - COMPACTOS */}
             <div
               className={`
-                rounded-xl sm:rounded-2xl p-4 sm:p-6 border
+                rounded-xl p-3 sm:p-4 border flex-shrink-0
                 ${theme === 'dark' ? 'bg-[#1a2332] border-gray-700' : 'bg-white border-gray-200 shadow-lg'}
               `}
             >
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={handleReset}
-                  className="w-full sm:flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-6 sm:px-8 py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl text-sm sm:text-base"
+                  className="w-full sm:flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl text-sm"
                 >
                   🔄 Realizar Nuevo Análisis
                 </button>
                 <button
                   onClick={() => window.print()}
                   className={`
-                    w-full sm:w-auto px-6 py-3 rounded-lg font-semibold transition-all border-2 text-sm sm:text-base
+                    w-full sm:w-auto px-5 py-2.5 rounded-lg font-semibold transition-all border-2 text-sm
                     ${theme === 'dark'
                       ? 'border-gray-600 text-gray-300 hover:bg-gray-800'
                       : 'border-gray-300 text-gray-700 hover:bg-gray-50'}

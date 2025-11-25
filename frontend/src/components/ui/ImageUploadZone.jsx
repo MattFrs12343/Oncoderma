@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { useTheme } from '../../contexts/ThemeContext'
 
-const ImageUploadZone = ({ onImageSelect, preview, imageMetadata }) => {
+const ImageUploadZone = ({ onImageSelect, preview, imageMetadata, isAnalyzing = false }) => {
   const { theme } = useTheme()
   const [isDragging, setIsDragging] = useState(false)
   const fileInputRef = useRef(null)
@@ -81,37 +81,59 @@ const ImageUploadZone = ({ onImageSelect, preview, imageMetadata }) => {
             <img
               src={preview}
               alt="Preview"
-              className="max-h-64 mx-auto rounded-lg shadow-lg"
+              className={`max-h-64 mx-auto rounded-lg shadow-lg transition-all duration-300 ${
+                isAnalyzing ? 'opacity-50 blur-sm' : 'opacity-100 blur-0'
+              }`}
             />
-            <div
-              className={`
-                absolute top-2 right-2 p-2 rounded-full
-                ${theme === 'dark' ? 'bg-gray-900/80' : 'bg-white/80'}
-                backdrop-blur-sm
-              `}
-            >
-              <svg
-                className="w-5 h-5 text-cyan-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            
+            {/* Spinner durante análisis */}
+            {isAnalyzing && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-12 h-12 border-4 border-gray-200 border-t-cyan-500 rounded-full animate-spin"></div>
+                  <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    Analizando...
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            {/* Check icon cuando no está analizando */}
+            {!isAnalyzing && (
+              <div
+                className={`
+                  absolute top-2 right-2 p-2 rounded-full
+                  ${theme === 'dark' ? 'bg-gray-900/80' : 'bg-white/80'}
+                  backdrop-blur-sm
+                `}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </div>
+                <svg
+                  className="w-5 h-5 text-cyan-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            )}
           </div>
-          <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-            Click para cambiar imagen o arrastra una nueva
-          </p>
-          {imageMetadata && (
-            <div className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
-              {imageMetadata.width}x{imageMetadata.height}px • {imageMetadata.megapixels}MP
-            </div>
+          {!isAnalyzing && (
+            <>
+              <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                Click para cambiar imagen o arrastra una nueva
+              </p>
+              {imageMetadata && (
+                <div className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
+                  {imageMetadata.width}x{imageMetadata.height}px • {imageMetadata.megapixels}MP
+                </div>
+              )}
+            </>
           )}
         </div>
       ) : (

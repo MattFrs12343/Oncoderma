@@ -74,7 +74,7 @@ const diseaseInfo = {
 }
 
 // Componente de dona pequeña para el historial
-const MiniDonutChart = ({ result, index, theme }) => {
+const MiniDonutChart = ({ result, index, theme, isPrimary = false }) => {
   const info = diseaseInfo[result.class]
   const isHighRisk = info.status === 'Maligno'
   const percentage = (result.prob * 100).toFixed(1)
@@ -89,12 +89,35 @@ const MiniDonutChart = ({ result, index, theme }) => {
   const strokeDashoffset = circumference - (result.prob * circumference)
   
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center relative min-w-[60px] sm:min-w-[70px]">
+      {/* Badge de diagnóstico principal */}
+      {isPrimary && (
+        <div className={`
+          absolute -top-1.5 sm:-top-2 left-1/2 transform -translate-x-1/2 z-10
+          px-1.5 sm:px-2 py-0.5 rounded-full text-[7px] sm:text-[9px] font-bold whitespace-nowrap
+          ${isHighRisk 
+            ? 'bg-orange-500 text-white' 
+            : 'bg-green-500 text-white'
+          }
+        `}>
+          Principal
+        </div>
+      )}
+      
       {/* Dona */}
-      <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+      <div className={`
+        relative w-14 h-14 sm:w-20 sm:h-20
+        ${isPrimary ? 'ring-1 sm:ring-2 ring-offset-1 sm:ring-offset-2 rounded-full' : ''}
+        ${isPrimary && isHighRisk ? 'ring-orange-400' : ''}
+        ${isPrimary && !isHighRisk ? 'ring-green-400' : ''}
+        ${isPrimary && theme === 'dark' ? 'ring-offset-[#0f1419]' : 'ring-offset-gray-50'}
+      `}>
         <svg 
           viewBox="0 0 80 80" 
-          className="w-full h-full transform -rotate-90"
+          className={`
+            w-full h-full transform -rotate-90
+            ${isPrimary ? 'drop-shadow-md sm:drop-shadow-lg' : ''}
+          `}
           preserveAspectRatio="xMidYMid meet"
         >
           {/* Círculo de fondo */}
@@ -128,20 +151,27 @@ const MiniDonutChart = ({ result, index, theme }) => {
         </svg>
         {/* Porcentaje en el centro */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className={`text-xs sm:text-sm font-black ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+          <span className={`
+            text-[10px] sm:text-sm font-black
+            ${theme === 'dark' ? 'text-white' : 'text-gray-900'}
+          `}>
             {percentage}%
           </span>
         </div>
       </div>
+      
       {/* Nombre de la enfermedad */}
-      <p className={`text-[9px] sm:text-[10px] text-center mt-1 font-medium leading-tight max-w-[70px] ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+      <p className={`
+        text-[8px] sm:text-[10px] text-center mt-1 sm:mt-1.5 font-medium leading-tight max-w-[60px] sm:max-w-[70px] px-0.5
+        ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
+      `}>
         {info.name}
       </p>
     </div>
   )
 }
 
-const HistorySection = () => {
+const HistorySection = ({ historyHeaderRef }) => {
   const { theme } = useTheme()
   const [isExpanded, setIsExpanded] = useState(true)
 
@@ -154,12 +184,14 @@ const HistorySection = () => {
     >
       {/* Header */}
       <button
+        ref={historyHeaderRef}
         onClick={() => setIsExpanded(!isExpanded)}
         className={`
           w-full px-6 py-4 flex items-center justify-between
-          transition-colors
-          ${theme === 'dark' ? 'hover:bg-[#0f1419]' : 'hover:bg-gray-50'}
+          transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2
+          ${theme === 'dark' ? 'hover:bg-[#0f1419] focus:ring-offset-[#1a2332]' : 'hover:bg-gray-50 focus:ring-offset-white'}
         `}
+        aria-label="Historial de Análisis"
       >
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600">
@@ -221,36 +253,37 @@ const HistorySection = () => {
                 `}
               >
                 {/* Layout responsive: columna en móvil, fila en desktop */}
-                <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-4">
+                <div className="flex flex-col lg:flex-row lg:items-start gap-3 lg:gap-4">
                   {/* Información principal (izquierda) */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`
-                            w-2 h-2 rounded-full flex-shrink-0
-                            ${item.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500'}
-                          `}
-                        />
-                        <span className={`text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                          {item.date} • {item.time}
-                        </span>
-                      </div>
-                      <span
+                    <div className="flex items-center gap-2 mb-2">
+                      <div
                         className={`
-                          text-xs font-bold flex-shrink-0
-                          ${theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'}
+                          w-2 h-2 rounded-full flex-shrink-0
+                          ${item.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500'}
                         `}
-                      >
-                        {item.probability}%
+                      />
+                      <span className={`text-[10px] sm:text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {item.date} • {item.time}
                       </span>
                     </div>
 
                     <div className="space-y-1">
-                      <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        {item.result}
-                      </p>
-                      <p className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>
+                      {/* Diagnóstico principal con porcentaje pegado */}
+                      <div className="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
+                        <p className={`text-xs sm:text-sm font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                          {item.result}
+                        </p>
+                        <span
+                          className={`
+                            text-xs sm:text-sm font-bold whitespace-nowrap
+                            ${theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'}
+                          `}
+                        >
+                          {item.probability}%
+                        </span>
+                      </div>
+                      <p className={`text-[10px] sm:text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>
                         {item.age} años • {item.sex} • {item.location}
                       </p>
                     </div>
@@ -258,18 +291,47 @@ const HistorySection = () => {
 
                   {/* Top 3 Diagnósticos con donas (derecha) */}
                   <div className={`
-                    flex items-center justify-center lg:justify-end gap-2 sm:gap-3 lg:gap-4
+                    flex flex-col items-center lg:items-end w-full lg:w-auto
                     pt-3 lg:pt-0 border-t lg:border-t-0 lg:border-l lg:pl-4
                     ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}
                   `}>
-                    {item.top3.map((result, index) => (
-                      <MiniDonutChart 
-                        key={`${itemIndex}-${index}`}
-                        result={result} 
-                        index={`${itemIndex}-${index}`}
-                        theme={theme}
-                      />
-                    ))}
+                    {/* Título explicativo */}
+                    <p className={`
+                      text-[8px] sm:text-[10px] font-medium mb-1.5 sm:mb-2 text-center lg:text-right
+                      ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
+                      leading-tight px-1
+                    `}>
+                      Probabilidades estimadas por la IA (Top 3 diagnósticos)
+                    </p>
+                    
+                    {/* Donas */}
+                    <div className="flex items-start justify-center lg:justify-end gap-1.5 sm:gap-3 lg:gap-4 mb-1.5 sm:mb-2 w-full overflow-x-auto px-1">
+                      {item.top3.map((result, index) => (
+                        <MiniDonutChart 
+                          key={`${itemIndex}-${index}`}
+                          result={result} 
+                          index={`${itemIndex}-${index}`}
+                          theme={theme}
+                          isPrimary={index === 0}
+                        />
+                      ))}
+                    </div>
+                    
+                    {/* Leyenda de colores */}
+                    <div className="flex items-center gap-2 sm:gap-3 text-[8px] sm:text-[10px] font-medium">
+                      <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-500"></div>
+                        <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
+                          Benigno
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-orange-500"></div>
+                        <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
+                          Maligno
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

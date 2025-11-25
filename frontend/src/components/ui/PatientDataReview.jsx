@@ -13,93 +13,104 @@ const PatientDataReview = ({ formData, sexOptions, anatomSiteOptions }) => {
     return option ? option.label : value
   }
 
-  const dataItems = [
-    {
-      label: 'Nombre completo',
-      value: formData.nombre || '-',
-    },
-    {
-      label: 'Edad',
-      value: formData.age ? `${formData.age} años` : '-',
-    },
-    {
-      label: 'Sexo',
-      value: formData.sex ? getSexLabel(formData.sex) : '-',
-    },
-    {
-      label: 'Zona anatómica',
-      value: formData.anatom_site_general ? getAnatomSiteLabel(formData.anatom_site_general) : '-',
-    },
-    {
-      label: 'Carnet de identidad (CI)',
-      value: formData.ci || '-',
-    },
-    {
-      label: 'Complemento',
-      value: formData.complemento || '-',
-    },
-    {
-      label: 'Teléfono',
-      value: formData.telefono || '-',
-    },
-  ]
-
   return (
     <div
       className={`
-        rounded-xl p-5 border
+        rounded-xl p-4 border
         ${theme === 'dark' ? 'bg-[#1a2332] border-gray-700' : 'bg-white border-gray-200 shadow-md'}
       `}
     >
-      <div className="flex items-center gap-2 mb-4">
-        <div 
-          className={`
-            p-2 rounded-lg shadow-sm
-            ${theme === 'dark' 
-              ? 'bg-gradient-to-br from-cyan-500/20 to-blue-600/20' 
-              : 'bg-gradient-to-br from-cyan-500 to-blue-600'
-            }
-          `}
+      {/* Header con icono */}
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-700/30">
+        <svg 
+          className={`w-4 h-4 ${theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'}`}
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
         >
-          <svg 
-            className={`
-              w-4 h-4
-              ${theme === 'dark' ? 'text-cyan-400' : 'text-white'}
-            `} 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2.5}
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-        </div>
-        <h3 className={`text-base font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2.5}
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
+        </svg>
+        <h3 className={`text-sm font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
           Datos del Paciente
         </h3>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        {dataItems.map((item, index) => (
-          <div
-            key={index}
-            className={`
-              p-2.5 rounded-lg border
-              ${theme === 'dark' ? 'bg-[#0f1419] border-gray-700' : 'bg-gray-50 border-gray-200'}
-            `}
-          >
-            <p className={`text-xs font-semibold mb-0.5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-              {item.label}
-            </p>
-            <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              {item.value}
-            </p>
-          </div>
-        ))}
+      {/* Ficha médica vertical compacta */}
+      <div className="space-y-1.5 text-sm">
+        {/* Nombre */}
+        <div className="flex items-start">
+          <span className={`font-bold min-w-[140px] ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            • Nombre:
+          </span>
+          <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            {formData.nombre || '—'}
+          </span>
+        </div>
+
+        {/* Edad */}
+        <div className="flex items-start">
+          <span className={`font-bold min-w-[140px] ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            • Edad:
+          </span>
+          <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            {formData.age ? `${formData.age} años` : '—'}
+          </span>
+        </div>
+
+        {/* Sexo */}
+        <div className="flex items-start">
+          <span className={`font-bold min-w-[140px] ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            • Sexo:
+          </span>
+          <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            {formData.sex ? getSexLabel(formData.sex) : '—'}
+          </span>
+        </div>
+
+        {/* CI */}
+        <div className="flex items-start">
+          <span className={`font-bold min-w-[140px] ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            • CI:
+          </span>
+          <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            {formData.ci || '—'}
+          </span>
+        </div>
+
+        {/* Complemento */}
+        <div className="flex items-start">
+          <span className={`font-bold min-w-[140px] ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            • Complemento:
+          </span>
+          <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            {formData.complemento || '—'}
+          </span>
+        </div>
+
+        {/* Teléfono */}
+        <div className="flex items-start">
+          <span className={`font-bold min-w-[140px] ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            • Teléfono:
+          </span>
+          <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            {formData.telefono || '—'}
+          </span>
+        </div>
+
+        {/* Zona anatómica */}
+        <div className="flex items-start">
+          <span className={`font-bold min-w-[140px] ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            • Zona anatómica:
+          </span>
+          <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            {formData.anatom_site_general ? getAnatomSiteLabel(formData.anatom_site_general) : '—'}
+          </span>
+        </div>
       </div>
     </div>
   )

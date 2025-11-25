@@ -93,12 +93,10 @@ const MiniDonutChart = ({ result, index, theme, isPrimary = false }) => {
   
   return (
     <div className="mini-donut-container">
-      {/* Badge de diagnóstico principal - Solo en desktop */}
-      {isPrimary && (
-        <div className={`mini-donut-badge ${isHighRisk ? 'malignant' : 'benign'}`}>
-          Principal
-        </div>
-      )}
+      {/* Abreviación arriba de la dona */}
+      <div className={`mini-donut-abbr ${theme === 'light' ? 'light' : ''}`}>
+        {result.class}
+      </div>
       
       {/* Dona */}
       <div 
@@ -110,7 +108,7 @@ const MiniDonutChart = ({ result, index, theme, isPrimary = false }) => {
           className={`mini-donut-svg ${isPrimary ? 'primary' : ''}`}
           preserveAspectRatio="xMidYMid meet"
           role="img"
-          aria-label={`${percentage}% — ${info.name}`}
+          aria-label={`${result.class} - ${percentage}% — ${info.name}`}
         >
           {/* Círculo de fondo */}
           <circle
@@ -151,7 +149,7 @@ const MiniDonutChart = ({ result, index, theme, isPrimary = false }) => {
         </div>
       </div>
       
-      {/* Nombre de la enfermedad */}
+      {/* Nombre de la enfermedad debajo */}
       <p className={`mini-donut-label ${theme === 'light' ? 'light' : ''}`}>
         {info.name}
       </p>

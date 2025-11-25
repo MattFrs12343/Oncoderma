@@ -605,11 +605,11 @@ const AnalizarPage = () => {
 
                               return (
                                 <div key={`${itemIndex}-${index}`} className="mini-donut-container">
-                                  {index === 0 && (
-                                    <div className={`mini-donut-badge ${isHighRisk ? 'malignant' : 'benign'}`}>
-                                      Principal
-                                    </div>
-                                  )}
+                                  {/* Abreviación arriba de la dona */}
+                                  <div className={`mini-donut-abbr ${theme === 'light' ? 'light' : ''}`}>
+                                    {result.class}
+                                  </div>
+                                  
                                   <div className={`mini-donut-chart ${index === 0 ? 'primary' : ''} ${isHighRisk ? 'malignant' : 'benign'} ${theme === 'light' ? 'light' : ''}`}>
                                     <svg viewBox="0 0 36 36" className={`mini-donut-svg ${index === 0 ? 'primary' : ''}`}>
                                       <circle cx="18" cy="18" r={radius} stroke={theme === 'dark' ? '#1f2937' : '#e5e7eb'} strokeWidth="3" fill="none" />

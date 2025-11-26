@@ -83,7 +83,7 @@ const DonutChart = ({ percentage, label, abbreviation, isHighRisk, index }) => {
   )
 }
 
-const HistoryCard = ({ item, index }) => {
+const HistoryCard = ({ item, index, isLatest }) => {
   const { theme } = useTheme()
 
   const diseaseInfo = {
@@ -92,15 +92,15 @@ const HistoryCard = ({ item, index }) => {
       status: 'Maligno',
     },
     'NV': {
-      name: 'Nevus mel...',
+      name: 'Nevus',
       status: 'Benigno',
     },
     'BCC': {
-      name: 'Carcinoma ...',
+      name: 'Carcinoma B.',
       status: 'Maligno',
     },
     'BKL': {
-      name: 'Lesión tipo ...',
+      name: 'Queratosis',
       status: 'Benigno',
     },
   }
@@ -112,9 +112,13 @@ const HistoryCard = ({ item, index }) => {
         transition-all duration-300 ease-out
         hover:shadow-xl hover:scale-[1.01]
         animate-fadeInUp
-        ${theme === 'dark' 
-          ? 'bg-slate-800/50 border-gray-700/50 hover:bg-slate-800/70 hover:border-cyan-500/30' 
-          : 'bg-white border-gray-200 hover:border-cyan-500/50 hover:shadow-cyan-500/10'
+        ${isLatest 
+          ? theme === 'dark'
+            ? 'bg-gradient-to-r from-cyan-900/40 to-blue-900/40 border-cyan-500/60 shadow-lg shadow-cyan-500/20 ring-2 ring-cyan-500/30'
+            : 'bg-gradient-to-r from-cyan-50 to-blue-50 border-cyan-400 shadow-lg shadow-cyan-500/30 ring-2 ring-cyan-400/30'
+          : theme === 'dark' 
+            ? 'bg-slate-800/50 border-gray-700/50 hover:bg-slate-800/70 hover:border-cyan-500/30' 
+            : 'bg-white border-gray-200 hover:border-cyan-500/50 hover:shadow-cyan-500/10'
         }
       `}
       style={{ animationDelay: `${index * 100}ms` }}
@@ -132,6 +136,19 @@ const HistoryCard = ({ item, index }) => {
             <span className={`text-xs sm:text-sm font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               {item.date} • {item.time}
             </span>
+            {isLatest && (
+              <span 
+                className={`
+                  ml-2 text-xs px-2 py-0.5 rounded-full font-bold animate-pulse
+                  ${theme === 'dark' 
+                    ? 'bg-cyan-500/30 text-cyan-300 border border-cyan-400/50' 
+                    : 'bg-cyan-500 text-white border border-cyan-600'
+                  }
+                `}
+              >
+                NUEVO
+              </span>
+            )}
             <span 
               className={`
                 ml-auto text-xl sm:text-2xl font-bold transition-all duration-300
@@ -203,7 +220,7 @@ const HistoryCard = ({ item, index }) => {
   )
 }
 
-const HistorySection = ({ historyData }) => {
+const HistorySection = ({ historyData, latestAnalysisId }) => {
   const { theme } = useTheme()
 
   return (
@@ -266,14 +283,19 @@ const HistorySection = ({ historyData }) => {
             }
           `}
         >
-          Datos mock
+          {historyData.length} análisis
         </span>
       </div>
 
       {/* History Cards */}
       <div className="space-y-3">
         {historyData.map((item, index) => (
-          <HistoryCard key={item.id} item={item} index={index} />
+          <HistoryCard 
+            key={item.id} 
+            item={item} 
+            index={index} 
+            isLatest={item.id === latestAnalysisId}
+          />
         ))}
       </div>
     </div>

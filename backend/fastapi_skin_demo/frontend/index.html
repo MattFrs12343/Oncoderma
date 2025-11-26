@@ -1,0 +1,37 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Skin Classifier</title>
+</head>
+<body>
+  <h2>Skin Classifier — Demo</h2>
+
+  <input type="file" id="file"><br><br>
+  Edad: <input id="age" type="number"><br><br>
+  Sexo: <select id="sex"><option value="female">female</option><option value="male">male</option></select><br><br>
+  Sitio anatómico: <input id="site" type="text"><br><br>
+
+  <button onclick="predict()">Predict</button>
+
+  <pre id="out"></pre>
+
+<script>
+async function predict(){
+  let f = document.getElementById("file").files[0];
+  if(!f){ alert("Selecciona una imagen"); return; }
+
+  let fd = new FormData();
+  fd.append("file", f);
+  fd.append("age", document.getElementById("age").value);
+  fd.append("sex", document.getElementById("sex").value);
+  fd.append("site", document.getElementById("site").value);
+
+  let r = await fetch("/predict", {method:"POST", body:fd});
+  let j = await r.json();
+  document.getElementById("out").textContent = JSON.stringify(j,null,2);
+}
+</script>
+</body>
+</html>

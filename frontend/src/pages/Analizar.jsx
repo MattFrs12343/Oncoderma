@@ -1,6 +1,37 @@
-import { useState } from 'react'
+import { useState, useMemo, useCallback, memo } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
 import HistorySection from '../components/dashboard/HistorySection'
+
+// Constants moved outside component to prevent recreation
+const SEX_OPTIONS = [
+  { value: 'MALE', label: 'Masculino' },
+  { value: 'FEMALE', label: 'Femenino' },
+]
+
+const ANATOM_SITE_OPTIONS = [
+  { value: 'anterior torso', label: 'Torso anterior' },
+  { value: 'posterior torso', label: 'Torso posterior' },
+  { value: 'head/neck', label: 'Cabeza/Cuello' },
+  { value: 'upper extremity', label: 'Extremidad superior' },
+  { value: 'lower extremity', label: 'Extremidad inferior' },
+  { value: 'palms/soles', label: 'Palmas/Plantas' },
+  { value: 'oral/genital', label: 'Oral/Genital' },
+]
+
+const ANATOM_SITE_MAP = {
+  'anterior torso': 'Torso anterior',
+  'posterior torso': 'Torso posterior',
+  'head/neck': 'Cabeza/Cuello',
+  'upper extremity': 'Extremidad superior',
+  'lower extremity': 'Extremidad inferior',
+  'palms/soles': 'Palmas/Plantas',
+  'oral/genital': 'Oral/Genital',
+}
+
+const SEX_LABELS = {
+  'male': 'Masculino',
+  'female': 'Femenino',
+}
 
 // Mock data
 const mockHistory = [
@@ -57,30 +88,7 @@ const mockHistory = [
   },
 ]
 
-const diseaseInfo = {
-  'MEL': {
-    name: 'Melanoma',
-    status: 'Maligno',
-    description: 'Tipo de cáncer de piel que se desarrolla en los melanocitos',
-  },
-  'NV': {
-    name: 'Nevus melanocítico',
-    status: 'Benigno',
-    description: 'Lunar común, generalmente inofensivo',
-  },
-  'BCC': {
-    name: 'Carcinoma basocelular',
-    status: 'Maligno',
-    description: 'Tipo más común de cáncer de piel, crecimiento lento',
-  },
-  'BKL': {
-    name: 'Lesión tipo queratosis benigna',
-    status: 'Benigno',
-    description: 'Crecimiento benigno de la piel, común en adultos',
-  },
-}
-
-const Stepper = ({ steps, currentStep }) => {
+const Stepper = memo(({ steps, currentStep }) => {
   const { theme } = useTheme()
 
   return (
@@ -153,25 +161,10 @@ const Stepper = ({ steps, currentStep }) => {
       </div>
     </div>
   )
-}
+})
 
-const PatientForm = ({ formData, onChange, onSubmit, onReset }) => {
+const PatientForm = memo(({ formData, onChange, onSubmit, onReset }) => {
   const { theme } = useTheme()
-
-  const sexOptions = [
-    { value: 'MALE', label: 'Masculino' },
-    { value: 'FEMALE', label: 'Femenino' },
-  ]
-
-  const anatomSiteOptions = [
-    { value: 'anterior torso', label: 'Torso anterior' },
-    { value: 'posterior torso', label: 'Torso posterior' },
-    { value: 'head/neck', label: 'Cabeza/Cuello' },
-    { value: 'upper extremity', label: 'Extremidad superior' },
-    { value: 'lower extremity', label: 'Extremidad inferior' },
-    { value: 'palms/soles', label: 'Palmas/Plantas' },
-    { value: 'oral/genital', label: 'Oral/Genital' },
-  ]
 
   return (
     <div
@@ -294,7 +287,7 @@ const PatientForm = ({ formData, onChange, onSubmit, onReset }) => {
               required
             >
               <option value="">Seleccione sexo</option>
-              {sexOptions.map((option) => (
+              {SEX_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -327,7 +320,7 @@ const PatientForm = ({ formData, onChange, onSubmit, onReset }) => {
             required
           >
             <option value="">Seleccione zona anatómica</option>
-            {anatomSiteOptions.map((option) => (
+            {ANATOM_SITE_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -444,27 +437,27 @@ const PatientForm = ({ formData, onChange, onSubmit, onReset }) => {
       </form>
     </div>
   )
-}
+})
 
-const ImageUploadZone = ({ preview, onImageSelect }) => {
+const ImageUploadZone = memo(({ preview, onImageSelect }) => {
   const { theme } = useTheme()
   const [isDragging, setIsDragging] = useState(false)
 
-  const handleDragEnter = (e) => {
+  const handleDragEnter = useCallback((e) => {
     e.preventDefault()
     setIsDragging(true)
-  }
+  }, [])
 
-  const handleDragLeave = (e) => {
+  const handleDragLeave = useCallback((e) => {
     e.preventDefault()
     setIsDragging(false)
-  }
+  }, [])
 
-  const handleDragOver = (e) => {
+  const handleDragOver = useCallback((e) => {
     e.preventDefault()
-  }
+  }, [])
 
-  const handleDrop = (e) => {
+  const handleDrop = useCallback((e) => {
     e.preventDefault()
     setIsDragging(false)
     const files = e.dataTransfer.files
@@ -478,9 +471,9 @@ const ImageUploadZone = ({ preview, onImageSelect }) => {
         reader.readAsDataURL(file)
       }
     }
-  }
+  }, [onImageSelect])
 
-  const handleFileSelect = (e) => {
+  const handleFileSelect = useCallback((e) => {
     const file = e.target.files[0]
     if (file) {
       const reader = new FileReader()
@@ -489,7 +482,7 @@ const ImageUploadZone = ({ preview, onImageSelect }) => {
       }
       reader.readAsDataURL(file)
     }
-  }
+  }, [onImageSelect])
 
   return (
     <div
@@ -591,35 +584,20 @@ const ImageUploadZone = ({ preview, onImageSelect }) => {
       </label>
     </div>
   )
-}
+})
 
-const PatientDataReview = ({ formData }) => {
+const PatientDataReview = memo(({ formData }) => {
   const { theme } = useTheme()
 
-  const sexOptions = [
-    { value: 'MALE', label: 'Masculino' },
-    { value: 'FEMALE', label: 'Femenino' },
-  ]
+  const sexLabel = useMemo(() => {
+    const option = SEX_OPTIONS.find((opt) => opt.value === formData.sex)
+    return option ? option.label : formData.sex
+  }, [formData.sex])
 
-  const anatomSiteOptions = [
-    { value: 'anterior torso', label: 'Torso anterior' },
-    { value: 'posterior torso', label: 'Torso posterior' },
-    { value: 'head/neck', label: 'Cabeza/Cuello' },
-    { value: 'upper extremity', label: 'Extremidad superior' },
-    { value: 'lower extremity', label: 'Extremidad inferior' },
-    { value: 'palms/soles', label: 'Palmas/Plantas' },
-    { value: 'oral/genital', label: 'Oral/Genital' },
-  ]
-
-  const getSexLabel = (value) => {
-    const option = sexOptions.find((opt) => opt.value === value)
-    return option ? option.label : value
-  }
-
-  const getAnatomSiteLabel = (value) => {
-    const option = anatomSiteOptions.find((opt) => opt.value === value)
-    return option ? option.label : value
-  }
+  const anatomSiteLabel = useMemo(() => {
+    const option = ANATOM_SITE_OPTIONS.find((opt) => opt.value === formData.anatom_site_general)
+    return option ? option.label : formData.anatom_site_general
+  }, [formData.anatom_site_general])
 
   return (
     <div
@@ -671,7 +649,7 @@ const PatientDataReview = ({ formData }) => {
             • Sexo:
           </span>
           <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-            {formData.sex ? getSexLabel(formData.sex) : '—'}
+            {formData.sex ? sexLabel : '—'}
           </span>
         </div>
 
@@ -707,13 +685,13 @@ const PatientDataReview = ({ formData }) => {
             • Zona anatómica:
           </span>
           <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-            {formData.anatom_site_general ? getAnatomSiteLabel(formData.anatom_site_general) : '—'}
+            {formData.anatom_site_general ? anatomSiteLabel : '—'}
           </span>
         </div>
       </div>
     </div>
   )
-}
+})
 
 const Analizar = () => {
   const { theme } = useTheme()
@@ -729,27 +707,42 @@ const Analizar = () => {
   })
   const [preview, setPreview] = useState(null)
   const [analyzing, setAnalyzing] = useState(false)
+  const [historyData, setHistoryData] = useState(mockHistory)
+  const [latestAnalysisId, setLatestAnalysisId] = useState(null)
 
-  const steps = [
+  const steps = useMemo(() => [
     { label: 'Datos del Paciente' },
     { label: 'Revisión y Análisis' },
     { label: 'Resultados' },
-  ]
+  ], [])
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
+  const stepDescription = useMemo(() => {
+    switch (currentStep) {
+      case 0:
+        return 'Completa los datos del paciente para continuar'
+      case 1:
+        return 'Revisa los datos y sube la imagen para analizar'
+      case 2:
+        return 'Resultados del análisis'
+      default:
+        return ''
+    }
+  }, [currentStep])
+
+  const handleChange = useCallback((e) => {
+    setFormData(prev => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    })
-  }
+    }))
+  }, [])
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = useCallback((e) => {
     e.preventDefault()
     setCurrentStep(1)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  }, [])
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setFormData({
       nombre: '',
       age: '',
@@ -762,21 +755,111 @@ const Analizar = () => {
     setPreview(null)
     setCurrentStep(0)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  }, [])
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     setCurrentStep(0)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  }, [])
 
-  const handleAnalyze = () => {
+  const handleAnalyze = useCallback(async () => {
     setAnalyzing(true)
-    setTimeout(() => {
+    
+    try {
+      // Convertir la imagen base64 a blob
+      const base64Response = await fetch(preview)
+      const blob = await base64Response.blob()
+      
+      // Crear FormData para enviar la imagen y metadatos
+      const formDataToSend = new FormData()
+      formDataToSend.append('file', blob, 'lesion.jpg')
+      formDataToSend.append('age', formData.age)
+      formDataToSend.append('sex', formData.sex.toLowerCase())
+      formDataToSend.append('site', formData.anatom_site_general)
+      
+      // Llamar al backend para obtener la predicción
+      const response = await fetch('/predict', {
+        method: 'POST',
+        body: formDataToSend
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.detail || `HTTP ${response.status}: ${response.statusText}`)
+      }
+      
+      const predictionData = await response.json()
+      console.log('Prediction result:', predictionData)
+      
+      // Obtener el ID del usuario desde localStorage
+      const userId = localStorage.getItem('userId')
+      
+      // Guardar el análisis en la base de datos
+      if (userId) {
+        const saveFormData = new FormData()
+        saveFormData.append('paciente_nombre', formData.nombre)
+        saveFormData.append('paciente_edad', formData.age)
+        saveFormData.append('paciente_sexo', formData.sex)
+        saveFormData.append('paciente_ci', formData.ci)
+        saveFormData.append('paciente_complemento', formData.complemento || '')
+        saveFormData.append('paciente_telefono', formData.telefono || '')
+        saveFormData.append('zona_clinica', formData.anatom_site_general)
+        saveFormData.append('enfermedad_codigo', predictionData.top_predictions[0].disease)
+        saveFormData.append('id_usuario', userId)
+        
+        const saveResponse = await fetch('/api/save-analysis', {
+          method: 'POST',
+          body: saveFormData
+        })
+        
+        if (saveResponse.ok) {
+          const saveData = await saveResponse.json()
+          console.log('Analysis saved to database:', saveData)
+        } else {
+          console.error('Failed to save analysis to database')
+        }
+      }
+      
+      // Crear nuevo análisis con fecha y hora actual
+      const now = new Date()
+      const date = now.toISOString().split('T')[0]
+      const time = now.toTimeString().split(' ')[0].substring(0, 5)
+      
+      // Mapear los resultados del backend al formato del frontend
+      const top3 = predictionData.top_predictions.slice(0, 3).map(pred => ({
+        class: pred.disease,
+        prob: pred.probability
+      }))
+      
+      const newAnalysis = {
+        id: Date.now(),
+        date,
+        time,
+        nombre: formData.nombre,
+        age: parseInt(formData.age),
+        sex: SEX_LABELS[formData.sex.toLowerCase()] || formData.sex,
+        location: ANATOM_SITE_MAP[formData.anatom_site_general] || formData.anatom_site_general,
+        result: predictionData.prediction_full,
+        probability: (predictionData.confidence * 100).toFixed(1),
+        status: 'completed',
+        top3,
+        isNew: true
+      }
+      
+      // Agregar al inicio del historial
+      setHistoryData(prev => [newAnalysis, ...prev])
+      setLatestAnalysisId(newAnalysis.id)
+      
       setAnalyzing(false)
       setCurrentStep(2)
       window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, 2000)
-  }
+      
+    } catch (error) {
+      console.error('Error al analizar:', error)
+      setAnalyzing(false)
+      alert('Error al realizar el análisis. Por favor, intenta de nuevo.')
+    }
+  }, [formData, preview])
 
   return (
     <div className={`min-h-screen py-6 ${theme === 'dark' ? 'bg-slate-900' : 'bg-gradient-to-br from-gray-50 via-white to-blue-50'}`}>
@@ -786,11 +869,7 @@ const Analizar = () => {
             Análisis de Imagen
           </h1>
           <p className={`text-lg font-semibold ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-            {currentStep === 0
-              ? 'Completa los datos del paciente para continuar'
-              : currentStep === 1
-              ? 'Revisa los datos y sube la imagen para analizar'
-              : 'Resultados del análisis'}
+            {stepDescription}
           </p>
         </div>
 
@@ -866,39 +945,18 @@ const Analizar = () => {
                     'Analizar Imagen'
                   )}
                 </button>
-                <button
-                  onClick={() => {
-                    setAnalyzing(true)
-                    setTimeout(() => {
-                      setAnalyzing(false)
-                      setCurrentStep(2)
-                      window.scrollTo({ top: 0, behavior: 'smooth' })
-                    }, 1500)
-                  }}
-                  disabled={analyzing}
-                  className={`
-                    px-6 py-2.5 rounded-lg font-semibold transition-all flex items-center gap-2
-                    ${theme === 'dark'
-                      ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                      : 'bg-purple-600 hover:bg-purple-700 text-white'}
-                    disabled:opacity-50 disabled:cursor-not-allowed
-                  `}
-                  title="Ver resultados con datos de prueba"
-                >
-                  Test
-                </button>
               </div>
             </div>
 
             {/* History Section - Below Image Upload */}
-            <HistorySection historyData={mockHistory} />
+            <HistorySection historyData={historyData} latestAnalysisId={latestAnalysisId} />
           </div>
         )}
 
         {currentStep === 2 && (
           <div className="max-w-5xl mx-auto space-y-4">
             {/* History Section - Results Step */}
-            <HistorySection historyData={mockHistory} />
+            <HistorySection historyData={historyData} latestAnalysisId={latestAnalysisId} />
 
             {/* Action Buttons */}
             <div

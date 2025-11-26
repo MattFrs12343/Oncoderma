@@ -8,22 +8,22 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
     ports:
-      - "8081:80"     # Cambiar puerto para evitar conflicto con frontend
+      - "80:80"       # Traefik maneja TODO el tráfico en puerto 80
       - "8080:8080"   # Traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - app-network
-    profiles:
-      - with-traefik  # Solo se inicia si se especifica explícitamente
+    restart: unless-stopped
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
-    ports:
-      - "8000:8000"   # Puerto local para desarrollo
+    # NO exponer puertos - solo accesible via Traefik
+    expose:
+      - "8000"
     environment:
       DATABASE_URL: postgresql://admin:admin123@postgres:5432/appdb
     labels:
@@ -32,13 +32,19 @@ services:
       - "traefik.http.routers.backend.entrypoints=web"
       - "traefik.http.routers.backend.priority=200"
       - "traefik.http.services.backend.loadbalancer.server.port=8000"
+      # CORS headers
+      - "traefik.http.middlewares.backend-cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS"
+      - "traefik.http.middlewares.backend-cors.headers.accesscontrolalloworiginlist=*"
+      - "traefik.http.middlewares.backend-cors.headers.accesscontrolallowheaders=*"
+      - "traefik.http.middlewares.backend-cors.headers.accesscontrolmaxage=100"
+      - "traefik.http.routers.backend.middlewares=backend-cors"
     networks:
       - app-network
     depends_on:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/api/palabra\")'"]
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/api/health\")'"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -49,13 +55,20 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: frontend
-    ports:
-      - "80:80"       # Puerto 80 para acceso directo y Cloudflare Tunnel
-      - "5173:80"     # Puerto local alternativo
+    # NO exponer puertos - solo accesible via Traefik
+    expose:
+      - "80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.frontend.priority=1"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
     networks:
       - app-network
     depends_on:
       - backend
+      - traefik
 
   postgres:
     image: postgres:16-alpine

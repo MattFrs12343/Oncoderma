@@ -30,18 +30,35 @@ const Login = () => {
     setError('')
     setLoading(true)
 
-    // Simular delay de autenticación
-    setTimeout(() => {
-      if (formData.username === STATIC_USERNAME && formData.password === STATIC_PASSWORD) {
+    try {
+      // Crear FormData para enviar credenciales
+      const loginData = new FormData()
+      loginData.append('username', formData.username)
+      loginData.append('password', formData.password)
+
+      // Llamar al endpoint de login
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        body: loginData
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
         // Login exitoso
         localStorage.setItem('isAuthenticated', 'true')
-        localStorage.setItem('username', formData.username)
+        localStorage.setItem('username', data.user.username)
+        localStorage.setItem('userId', data.user.id)
         navigate('/')
       } else {
-        setError('Usuario o contraseña incorrectos')
+        setError(data.message || 'Usuario o contraseña incorrectos')
       }
+    } catch (error) {
+      console.error('Error en login:', error)
+      setError('Error al conectar con el servidor')
+    } finally {
       setLoading(false)
-    }, 800)
+    }
   }
 
   return (

@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS historia_clinica (
     zona_clinica_id INT REFERENCES zona_clinica(id),
     edad INT NOT NULL,
     enfermedad_id INT REFERENCES enfermedad(id),
+    id_usuario INT REFERENCES usuario(id),
     fecha TIMESTAMP DEFAULT NOW()
 );
 

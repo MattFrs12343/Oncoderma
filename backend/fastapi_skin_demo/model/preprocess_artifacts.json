@@ -1,0 +1,57 @@
+{
+  "sex2idx": {
+    "female": 0,
+    "male": 1,
+    "unknown": 2
+  },
+  "site2idx": {
+    "anterior torso": 0,
+    "head/neck": 1,
+    "lateral torso": 2,
+    "lower extremity": 3,
+    "oral/genital": 4,
+    "palms/soles": 5,
+    "posterior torso": 6,
+    "upper extremity": 7
+  },
+  "age_medians": {
+    "BCC": 70,
+    "BKL": 65,
+    "MEL": 65,
+    "NV": 45
+  },
+  "global_median_age": 60,
+  "class2idx": {
+    "MEL": 0,
+    "NV": 1,
+    "BCC": 2,
+    "BKL": 3
+  },
+  "idx2class": {
+    "0": "MEL",
+    "1": "NV",
+    "2": "BCC",
+    "3": "BKL"
+  },
+  "img_size": [
+    224,
+    224
+  ],
+  "age_mean": 59.8458605664488,
+  "age_std": 16.275794073317854,
+  "SEX_CATEGORIES": [
+    "female",
+    "male",
+    "unknown"
+  ],
+  "SITE_CATEGORIES": [
+    "anterior torso",
+    "head/neck",
+    "lateral torso",
+    "lower extremity",
+    "oral/genital",
+    "palms/soles",
+    "posterior torso",
+    "upper extremity"
+  ]
+}

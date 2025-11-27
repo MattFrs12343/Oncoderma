@@ -181,7 +181,7 @@ async def search_patients(ci: str, user_id: int):
         
         # Search patients by CI that have history with this user
         cursor.execute("""
-            SELECT DISTINCT p.ci, p.complemento
+            SELECT DISTINCT p.ci, p.complemento, p.nombre
             FROM paciente p
             JOIN historia_clinica hc ON p.id = hc.paciente_id
             WHERE hc.id_usuario = %s
@@ -195,13 +195,16 @@ async def search_patients(ci: str, user_id: int):
         cursor.close()
         conn.close()
         
-        # Format results
+        # Format results with CI and name
         results = []
         for patient in patients:
             ci_full = patient['ci']
             if patient['complemento']:
                 ci_full = f"{patient['ci']}-{patient['complemento']}"
-            results.append(ci_full)
+            results.append({
+                "ci": ci_full,
+                "nombre": patient['nombre']
+            })
         
         logger.info(f"Patient search - user_id={user_id}, ci={ci}, results={len(results)}")
         

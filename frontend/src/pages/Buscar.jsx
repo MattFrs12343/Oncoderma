@@ -27,8 +27,8 @@ const Buscar = () => {
   // Buscar sugerencias cuando el usuario escribe
   useEffect(() => {
     const fetchSuggestions = async () => {
-      // Solo buscar si hay 4 o más dígitos
-      if (searchQuery.length < 4) {
+      // Buscar desde el primer dígito
+      if (searchQuery.length < 1) {
         setSuggestions([])
         setShowSuggestions(false)
         return
@@ -96,7 +96,7 @@ const Buscar = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && suggestions.length > 0) {
-      handleSelectCI(suggestions[0])
+      handleSelectCI(suggestions[0].ci)
     }
   }
 
@@ -146,17 +146,17 @@ const Buscar = () => {
                 placeholder="Ingresa el CI del paciente (ej: 12345678)"
               />
 
-              {/* Sugerencias */}
+              {/* Sugerencias con CI y Nombre */}
               {showSuggestions && suggestions.length > 0 && (
                 <div className={`absolute z-10 w-full mt-2 rounded-lg overflow-hidden shadow-lg border ${
                   theme === 'dark' 
                     ? 'bg-slate-900 border-gray-700' 
                     : 'bg-white border-gray-200'
                 }`}>
-                  {suggestions.map((ci, index) => (
+                  {suggestions.map((suggestion, index) => (
                     <button
                       key={index}
-                      onClick={() => handleSelectCI(ci)}
+                      onClick={() => handleSelectCI(suggestion.ci)}
                       className={`w-full px-4 py-3 text-left transition-all duration-200 ${
                         theme === 'dark'
                           ? 'hover:bg-slate-800 text-gray-300'
@@ -165,11 +165,16 @@ const Buscar = () => {
                         theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
                       }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <span className={`font-mono text-sm ${
-                          theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
-                        }`}>{ci}</span>
-                        <svg className={`h-4 w-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <span className={`font-mono text-sm font-bold ${
+                            theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
+                          }`}>{suggestion.ci}</span>
+                          <span className={`text-sm font-semibold truncate ${
+                            theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                          }`}>{suggestion.nombre}</span>
+                        </div>
+                        <svg className={`h-4 w-4 flex-shrink-0 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </div>
@@ -180,9 +185,9 @@ const Buscar = () => {
             </div>
 
             {/* Hint */}
-            {searchQuery.length > 0 && searchQuery.length < 4 && (
+            {searchQuery.length === 0 && (
               <p className={`mt-2 text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
-                Ingresa al menos 4 dígitos para buscar
+                Comienza a escribir para ver sugerencias
               </p>
             )}
           </div>
@@ -339,68 +344,74 @@ const Buscar = () => {
                       </div>
 
                       {/* Zona clínica */}
-                      <div className="mb-4">
-                        <p className={`text-xs font-bold mb-1 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
-                          ZONA CLÍNICA
-                        </p>
-                        <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      <div className="mb-3">
+                        <span className={`text-xs font-semibold ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
+                          Zona Clínica: 
+                        </span>
+                        <span className={`text-xs font-bold ml-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                           {record.zona_clinica}
-                        </p>
+                        </span>
                       </div>
 
-                      {/* TOP 3 Diagnósticos */}
+                      {/* TOP 3 Diagnósticos - Formato Tabla Compacta */}
                       <div>
-                        <p className={`text-xs font-bold mb-3 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
-                          TOP 3 DIAGNÓSTICOS
+                        <p className={`text-xs font-semibold mb-2 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
+                          Top 3 Diagnósticos
                         </p>
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                           {record.top3.map((diagnosis, idx) => (
                             <div
                               key={idx}
-                              className={`flex items-center justify-between p-3 rounded-lg border shadow-md transition-all duration-200 hover:shadow-lg ${
-                                theme === 'dark' 
-                                  ? 'bg-gradient-to-r from-slate-900 to-slate-800 border-gray-700 hover:border-cyan-500/50' 
-                                  : 'bg-gradient-to-r from-white to-gray-50 border-gray-200 hover:border-cyan-400'
+                              className={`flex items-center justify-between py-2 px-3 rounded border-l-4 ${
+                                idx === 0 
+                                  ? theme === 'dark'
+                                    ? 'border-l-cyan-500 bg-cyan-500/5'
+                                    : 'border-l-cyan-500 bg-cyan-50/50'
+                                  : idx === 1
+                                  ? theme === 'dark'
+                                    ? 'border-l-blue-500 bg-blue-500/5'
+                                    : 'border-l-blue-500 bg-blue-50/50'
+                                  : theme === 'dark'
+                                    ? 'border-l-purple-500 bg-purple-500/5'
+                                    : 'border-l-purple-500 bg-purple-50/50'
                               }`}
                             >
-                              <div className="flex items-center gap-3">
-                                {/* Número de posición con degradado */}
-                                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shadow-md ${
+                              <div className="flex items-center gap-2 flex-1">
+                                <span className={`text-xs font-bold w-4 ${
                                   idx === 0 
-                                    ? 'bg-gradient-to-br from-cyan-400 to-blue-600 text-white shadow-cyan-500/50'
-                                    : idx === 1 
-                                    ? 'bg-gradient-to-br from-blue-400 to-indigo-600 text-white shadow-blue-500/50'
-                                    : 'bg-gradient-to-br from-purple-400 to-pink-600 text-white shadow-purple-500/50'
+                                    ? theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
+                                    : idx === 1
+                                    ? theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+                                    : theme === 'dark' ? 'text-purple-400' : 'text-purple-600'
                                 }`}>
-                                  {idx + 1}
-                                </div>
-                                <div>
-                                  <p className={`text-sm font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                                  {idx + 1}.
+                                </span>
+                                <div className="flex-1">
+                                  <p className={`text-xs font-bold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                                     {diagnosis.nombre}
                                   </p>
-                                  <p className={`text-xs font-semibold ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
+                                  <p className={`text-xs font-medium ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
                                     {diagnosis.enfermedad}
                                   </p>
                                 </div>
                               </div>
                               
-                              {/* Probabilidad y Status con degradado */}
-                              <div className="text-right">
-                                <p className={`text-xl font-black mb-0.5 ${
+                              <div className="flex items-center gap-2">
+                                <span className={`text-base font-black ${
                                   diagnosis.status === 'Maligno' 
-                                    ? 'bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent'
-                                    : 'bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-transparent'
+                                    ? theme === 'dark' ? 'text-red-400' : 'text-red-600'
+                                    : theme === 'dark' ? 'text-emerald-400' : 'text-emerald-600'
                                 }`}>
                                   {diagnosis.probabilidad.toFixed(1)}%
-                                </p>
-                                <span className={`text-xs px-2 py-0.5 rounded-md font-bold shadow-sm ${
+                                </span>
+                                <span className={`text-xs px-1.5 py-0.5 rounded font-bold ${
                                   diagnosis.status === 'Maligno'
                                     ? theme === 'dark' 
-                                      ? 'bg-gradient-to-r from-red-500/20 to-pink-500/20 text-red-400 border border-red-500/30' 
-                                      : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700 border border-red-200'
+                                      ? 'bg-red-500/20 text-red-400' 
+                                      : 'bg-red-100 text-red-700'
                                     : theme === 'dark' 
-                                      ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 text-emerald-400 border border-emerald-500/30' 
-                                      : 'bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700 border border-emerald-200'
+                                      ? 'bg-emerald-500/20 text-emerald-400' 
+                                      : 'bg-emerald-100 text-emerald-700'
                                 }`}>
                                   {diagnosis.status}
                                 </span>

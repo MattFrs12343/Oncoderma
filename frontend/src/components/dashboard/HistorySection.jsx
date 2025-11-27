@@ -223,7 +223,7 @@ const HistoryCard = ({ item, index, isLatest }) => {
   )
 }
 
-const HistorySection = ({ historyData, latestAnalysisId }) => {
+const HistorySection = ({ historyData, latestAnalysisId, compact = false }) => {
   const { theme } = useTheme()
 
   return (
@@ -291,7 +291,16 @@ const HistorySection = ({ historyData, latestAnalysisId }) => {
       </div>
 
       {/* History Cards */}
-      <div className="space-y-3">
+      <div 
+        className={`
+          space-y-3
+          ${compact ? 'max-h-[600px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-cyan-500 scrollbar-track-transparent' : ''}
+        `}
+        style={compact ? {
+          scrollbarWidth: 'thin',
+          scrollbarColor: theme === 'dark' ? '#06b6d4 transparent' : '#0891b2 transparent'
+        } : {}}
+      >
         {historyData.map((item, index) => (
           <HistoryCard 
             key={item.id} 
@@ -337,6 +346,26 @@ if (typeof document !== 'undefined') {
 
     .animate-fadeInUp {
       animation: fadeInUp 0.6s ease-out backwards;
+    }
+
+    /* Custom scrollbar styles */
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 10px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: #06b6d4;
+      border-radius: 10px;
+      transition: background 0.3s ease;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+      background: #0891b2;
     }
   `
   if (!document.querySelector('#history-section-animations')) {

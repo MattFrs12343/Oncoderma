@@ -995,7 +995,7 @@ const Analizar = () => {
             </div>
 
             {/* History Section - Below Image Upload */}
-            <HistorySection historyData={historyData} latestAnalysisId={latestAnalysisId} />
+            <HistorySection historyData={historyData} latestAnalysisId={latestAnalysisId} compact={true} />
           </div>
         )}
 

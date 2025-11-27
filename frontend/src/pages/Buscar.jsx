@@ -392,7 +392,7 @@ const Buscar = () => {
                                     ? theme === 'dark' ? 'text-red-400' : 'text-red-600'
                                     : theme === 'dark' ? 'text-emerald-400' : 'text-emerald-600'
                                 }`}>
-                                  {(diagnosis.probabilidad * 100).toFixed(1)}%
+                                  {diagnosis.probabilidad.toFixed(1)}%
                                 </p>
                                 <span className={`text-xs px-3 py-1 rounded-full font-light ${
                                   diagnosis.status === 'Maligno'

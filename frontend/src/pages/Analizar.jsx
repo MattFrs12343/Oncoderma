@@ -736,11 +736,52 @@ const Analizar = () => {
     }))
   }, [])
 
-  const handleFormSubmit = useCallback((e) => {
+  const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault()
+    
+    // Buscar historial del paciente por CI
+    try {
+      const response = await fetch(`/api/patient-history/${formData.ci}`)
+      if (response.ok) {
+        const data = await response.json()
+        console.log('Patient history:', data)
+        
+        if (data.history && data.history.length > 0) {
+          // Formatear historial para el frontend
+          const formattedHistory = data.history.map(record => ({
+            id: record.id,
+            date: record.fecha,
+            time: record.hora,
+            nombre: formData.nombre,
+            age: record.edad,
+            sex: formData.sex,
+            location: record.zona_clinica,
+            usuario: record.usuario,
+            result: `${record.top3[0].nombre} (${record.top3[0].enfermedad})`,
+            probability: record.top3[0].probabilidad,
+            status: 'completed',
+            top3: record.top3.map(item => ({
+              class: item.enfermedad,
+              name: item.nombre,
+              prob: item.probabilidad,
+              status: item.status
+            }))
+          }))
+          
+          setHistoryData(formattedHistory)
+        } else {
+          // No hay historial previo
+          setHistoryData([])
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching patient history:', error)
+      setHistoryData([])
+    }
+    
     setCurrentStep(1)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [])
+  }, [formData])
 
   const handleReset = useCallback(() => {
     setFormData({
@@ -794,7 +835,7 @@ const Analizar = () => {
       // Obtener el ID del usuario desde localStorage
       const userId = localStorage.getItem('userId')
       
-      // Guardar el análisis en la base de datos
+      // Guardar el análisis en la base de datos con TOP 3
       if (userId) {
         const saveFormData = new FormData()
         saveFormData.append('paciente_nombre', formData.nombre)
@@ -804,7 +845,15 @@ const Analizar = () => {
         saveFormData.append('paciente_complemento', formData.complemento || '')
         saveFormData.append('paciente_telefono', formData.telefono || '')
         saveFormData.append('zona_clinica', formData.anatom_site_general)
-        saveFormData.append('enfermedad_codigo', predictionData.top_predictions[0].disease)
+        
+        // Enviar TOP 3 enfermedades con probabilidades (ya como porcentajes 0-100)
+        saveFormData.append('enfermedad_codigo_1', predictionData.top_predictions[0].disease)
+        saveFormData.append('probabilidad_1', (predictionData.top_predictions[0].probability * 100).toFixed(2))
+        saveFormData.append('enfermedad_codigo_2', predictionData.top_predictions[1].disease)
+        saveFormData.append('probabilidad_2', (predictionData.top_predictions[1].probability * 100).toFixed(2))
+        saveFormData.append('enfermedad_codigo_3', predictionData.top_predictions[2].disease)
+        saveFormData.append('probabilidad_3', (predictionData.top_predictions[2].probability * 100).toFixed(2))
+        
         saveFormData.append('id_usuario', userId)
         
         const saveResponse = await fetch('/api/save-analysis', {
@@ -815,40 +864,37 @@ const Analizar = () => {
         if (saveResponse.ok) {
           const saveData = await saveResponse.json()
           console.log('Analysis saved to database:', saveData)
+          
+          // Actualizar historial con datos de la BD
+          if (saveData.history && saveData.history.length > 0) {
+            const formattedHistory = saveData.history.map(record => ({
+              id: record.id,
+              date: record.fecha,
+              time: record.hora,
+              nombre: formData.nombre,
+              age: record.edad,
+              sex: SEX_LABELS[formData.sex.toLowerCase()] || formData.sex,
+              location: record.zona_clinica,
+              usuario: record.usuario,
+              result: `${record.top3[0].nombre} (${record.top3[0].enfermedad})`,
+              probability: record.top3[0].probabilidad,
+              status: 'completed',
+              top3: record.top3.map(item => ({
+                class: item.enfermedad,
+                name: item.nombre,
+                prob: item.probabilidad,
+                status: item.status
+              })),
+              isNew: record.id === saveData.data.historia_clinica_id
+            }))
+            
+            setHistoryData(formattedHistory)
+            setLatestAnalysisId(saveData.data.historia_clinica_id)
+          }
         } else {
           console.error('Failed to save analysis to database')
         }
       }
-      
-      // Crear nuevo análisis con fecha y hora actual
-      const now = new Date()
-      const date = now.toISOString().split('T')[0]
-      const time = now.toTimeString().split(' ')[0].substring(0, 5)
-      
-      // Mapear los resultados del backend al formato del frontend
-      const top3 = predictionData.top_predictions.slice(0, 3).map(pred => ({
-        class: pred.disease,
-        prob: pred.probability
-      }))
-      
-      const newAnalysis = {
-        id: Date.now(),
-        date,
-        time,
-        nombre: formData.nombre,
-        age: parseInt(formData.age),
-        sex: SEX_LABELS[formData.sex.toLowerCase()] || formData.sex,
-        location: ANATOM_SITE_MAP[formData.anatom_site_general] || formData.anatom_site_general,
-        result: predictionData.prediction_full,
-        probability: (predictionData.confidence * 100).toFixed(1),
-        status: 'completed',
-        top3,
-        isNew: true
-      }
-      
-      // Agregar al inicio del historial
-      setHistoryData(prev => [newAnalysis, ...prev])
-      setLatestAnalysisId(newAnalysis.id)
       
       setAnalyzing(false)
       setCurrentStep(2)

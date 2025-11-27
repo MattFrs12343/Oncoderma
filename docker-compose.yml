@@ -81,6 +81,7 @@ services:
       POSTGRES_DB: appdb
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
     networks:
       - app-network
     healthcheck:

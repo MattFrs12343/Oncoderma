@@ -157,6 +157,201 @@ async def login(
             status_code=500
         )
 
+@app.get("/api/search-patients")
+async def search_patients(ci: str, user_id: int):
+    """
+    Search patients by CI that belong to a specific user.
+    
+    Args:
+        ci: CI search query (partial or complete)
+        user_id: User ID to filter patients
+    
+    Returns:
+        JSON with list of matching CIs
+    """
+    import psycopg2
+    from psycopg2.extras import RealDictCursor
+    import os
+    
+    try:
+        # Get database connection
+        database_url = os.getenv("DATABASE_URL", "postgresql://admin:admin123@postgres:5432/appdb")
+        conn = psycopg2.connect(database_url)
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        
+        # Search patients by CI that have history with this user
+        cursor.execute("""
+            SELECT DISTINCT p.ci, p.complemento
+            FROM paciente p
+            JOIN historia_clinica hc ON p.id = hc.paciente_id
+            WHERE hc.id_usuario = %s
+            AND p.ci LIKE %s
+            ORDER BY p.ci
+            LIMIT 10
+        """, (user_id, f"%{ci}%"))
+        
+        patients = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        # Format results
+        results = []
+        for patient in patients:
+            ci_full = patient['ci']
+            if patient['complemento']:
+                ci_full = f"{patient['ci']}-{patient['complemento']}"
+            results.append(ci_full)
+        
+        logger.info(f"Patient search - user_id={user_id}, ci={ci}, results={len(results)}")
+        
+        return JSONResponse({
+            "success": True,
+            "results": results
+        })
+        
+    except Exception as e:
+        logger.error(f"Search patients error: {str(e)}", exc_info=True)
+        return JSONResponse(
+            {
+                "success": False,
+                "message": f"Error al buscar pacientes: {str(e)}"
+            },
+            status_code=500
+        )
+
+@app.get("/api/patient-history/{ci}")
+async def get_patient_history(ci: str):
+    """
+    Get patient history by CI number.
+    
+    Args:
+        ci: Patient CI number
+    
+    Returns:
+        JSON with patient info and analysis history with TOP 3 diseases
+    """
+    import psycopg2
+    from psycopg2.extras import RealDictCursor
+    import os
+    
+    try:
+        # Get database connection
+        database_url = os.getenv("DATABASE_URL", "postgresql://admin:admin123@postgres:5432/appdb")
+        conn = psycopg2.connect(database_url)
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        
+        # Get patient info
+        cursor.execute("""
+            SELECT p.id, p.nombre, p.edad, p.ci, p.complemento, p.telefono,
+                   s.sexo
+            FROM paciente p
+            LEFT JOIN sexo s ON p.sexo_id = s.id
+            WHERE p.ci = %s
+        """, (ci,))
+        patient = cursor.fetchone()
+        
+        if not patient:
+            cursor.close()
+            conn.close()
+            return JSONResponse({
+                "success": True,
+                "patient": None,
+                "history": [],
+                "message": "Este paciente no tiene historial previo"
+            })
+        
+        # Get patient history with TOP 3 diseases
+        cursor.execute("""
+            SELECT 
+                hc.id,
+                hc.fecha,
+                hc.edad,
+                zc.zona as zona_clinica,
+                e1.enfermedad as enfermedad_1,
+                e1.detalle as detalle_1,
+                hc.probabilidad_1,
+                e2.enfermedad as enfermedad_2,
+                e2.detalle as detalle_2,
+                hc.probabilidad_2,
+                e3.enfermedad as enfermedad_3,
+                e3.detalle as detalle_3,
+                hc.probabilidad_3,
+                u.nombre as usuario
+            FROM historia_clinica hc
+            JOIN zona_clinica zc ON hc.zona_clinica_id = zc.id
+            JOIN enfermedad e1 ON hc.enfermedad_id_1 = e1.id
+            JOIN enfermedad e2 ON hc.enfermedad_id_2 = e2.id
+            JOIN enfermedad e3 ON hc.enfermedad_id_3 = e3.id
+            JOIN usuario u ON hc.id_usuario = u.id
+            WHERE hc.paciente_id = %s
+            ORDER BY hc.fecha DESC
+        """, (patient['id'],))
+        
+        history_records = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        # Format history
+        history = []
+        for record in history_records:
+            history.append({
+                "id": record['id'],
+                "fecha": record['fecha'].strftime('%Y-%m-%d'),
+                "hora": record['fecha'].strftime('%H:%M'),
+                "edad": record['edad'],
+                "zona_clinica": record['zona_clinica'],
+                "usuario": record['usuario'],
+                "top3": [
+                    {
+                        "enfermedad": record['enfermedad_1'],
+                        "nombre": record['detalle_1'].split(' - ')[0] if ' - ' in record['detalle_1'] else record['detalle_1'],
+                        "probabilidad": float(record['probabilidad_1']),  # Ya está en formato 0-100
+                        "status": "Maligno" if record['enfermedad_1'] in ['MEL', 'BCC'] else "Benigno"
+                    },
+                    {
+                        "enfermedad": record['enfermedad_2'],
+                        "nombre": record['detalle_2'].split(' - ')[0] if ' - ' in record['detalle_2'] else record['detalle_2'],
+                        "probabilidad": float(record['probabilidad_2']),  # Ya está en formato 0-100
+                        "status": "Maligno" if record['enfermedad_2'] in ['MEL', 'BCC'] else "Benigno"
+                    },
+                    {
+                        "enfermedad": record['enfermedad_3'],
+                        "nombre": record['detalle_3'].split(' - ')[0] if ' - ' in record['detalle_3'] else record['detalle_3'],
+                        "probabilidad": float(record['probabilidad_3']),  # Ya está en formato 0-100
+                        "status": "Maligno" if record['enfermedad_3'] in ['MEL', 'BCC'] else "Benigno"
+                    }
+                ]
+            })
+        
+        logger.info(f"Patient history retrieved - ci={ci}, records={len(history)}")
+        
+        return JSONResponse({
+            "success": True,
+            "patient": {
+                "id": patient['id'],
+                "nombre": patient['nombre'],
+                "edad": patient['edad'],
+                "ci": patient['ci'],
+                "complemento": patient['complemento'],
+                "telefono": patient['telefono'],
+                "sexo": patient['sexo']
+            },
+            "history": history,
+            "message": f"Se encontraron {len(history)} análisis previos" if history else "Este paciente no tiene historial previo"
+        })
+        
+    except Exception as e:
+        logger.error(f"Get patient history error: {str(e)}", exc_info=True)
+        return JSONResponse(
+            {
+                "success": False,
+                "message": f"Error al obtener historial: {str(e)}"
+            },
+            status_code=500
+        )
+
 @app.post("/api/save-analysis")
 async def save_analysis(
     paciente_nombre: str = Form(...),
@@ -166,11 +361,16 @@ async def save_analysis(
     paciente_complemento: str = Form(None),
     paciente_telefono: str = Form(None),
     zona_clinica: str = Form(...),
-    enfermedad_codigo: str = Form(...),
+    enfermedad_codigo_1: str = Form(...),
+    probabilidad_1: float = Form(...),
+    enfermedad_codigo_2: str = Form(...),
+    probabilidad_2: float = Form(...),
+    enfermedad_codigo_3: str = Form(...),
+    probabilidad_3: float = Form(...),
     id_usuario: int = Form(...)
 ):
     """
-    Save analysis results to database.
+    Save analysis results to database with TOP 3 diseases.
     
     Args:
         paciente_nombre: Patient name
@@ -180,11 +380,16 @@ async def save_analysis(
         paciente_complemento: CI complement (optional)
         paciente_telefono: Patient phone (optional)
         zona_clinica: Clinical zone
-        enfermedad_codigo: Disease code (MEL, NV, BCC, BKL)
+        enfermedad_codigo_1: Disease code 1 (MEL, NV, BCC, BKL)
+        probabilidad_1: Probability 1 (0-100)
+        enfermedad_codigo_2: Disease code 2
+        probabilidad_2: Probability 2 (0-100)
+        enfermedad_codigo_3: Disease code 3
+        probabilidad_3: Probability 3 (0-100)
         id_usuario: User ID who performed the analysis
     
     Returns:
-        JSON with success status and created record IDs
+        JSON with success status and updated patient history
     """
     import psycopg2
     from psycopg2.extras import RealDictCursor
@@ -222,10 +427,18 @@ async def save_analysis(
         zona_result = cursor.fetchone()
         zona_clinica_id = zona_result['id'] if zona_result else None
         
-        # Get enfermedad_id
-        cursor.execute("SELECT id FROM enfermedad WHERE enfermedad = %s", (enfermedad_codigo,))
-        enfermedad_result = cursor.fetchone()
-        enfermedad_id = enfermedad_result['id'] if enfermedad_result else None
+        # Get enfermedad IDs for TOP 3
+        cursor.execute("SELECT id FROM enfermedad WHERE enfermedad = %s", (enfermedad_codigo_1,))
+        enfermedad_result_1 = cursor.fetchone()
+        enfermedad_id_1 = enfermedad_result_1['id'] if enfermedad_result_1 else None
+        
+        cursor.execute("SELECT id FROM enfermedad WHERE enfermedad = %s", (enfermedad_codigo_2,))
+        enfermedad_result_2 = cursor.fetchone()
+        enfermedad_id_2 = enfermedad_result_2['id'] if enfermedad_result_2 else None
+        
+        cursor.execute("SELECT id FROM enfermedad WHERE enfermedad = %s", (enfermedad_codigo_3,))
+        enfermedad_result_3 = cursor.fetchone()
+        enfermedad_id_3 = enfermedad_result_3['id'] if enfermedad_result_3 else None
         
         # Check if patient exists by CI
         cursor.execute("SELECT id FROM paciente WHERE ci = %s", (paciente_ci,))
@@ -251,17 +464,88 @@ async def save_analysis(
                   paciente_ci, paciente_complemento, paciente_telefono))
             paciente_id = cursor.fetchone()['id']
         
-        # Insert historia_clinica record
+        # Insert historia_clinica record with TOP 3
         cursor.execute("""
-            INSERT INTO historia_clinica (paciente_id, zona_clinica_id, edad, enfermedad_id, id_usuario)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO historia_clinica (
+                paciente_id, zona_clinica_id, edad, 
+                enfermedad_id_1, probabilidad_1,
+                enfermedad_id_2, probabilidad_2,
+                enfermedad_id_3, probabilidad_3,
+                id_usuario
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id
-        """, (paciente_id, zona_clinica_id, paciente_edad, enfermedad_id, id_usuario))
+        """, (paciente_id, zona_clinica_id, paciente_edad, 
+              enfermedad_id_1, probabilidad_1,
+              enfermedad_id_2, probabilidad_2,
+              enfermedad_id_3, probabilidad_3,
+              id_usuario))
         historia_id = cursor.fetchone()['id']
+        
+        # Get updated patient history
+        cursor.execute("""
+            SELECT 
+                hc.id,
+                hc.fecha,
+                hc.edad,
+                zc.zona as zona_clinica,
+                e1.enfermedad as enfermedad_1,
+                e1.detalle as detalle_1,
+                hc.probabilidad_1,
+                e2.enfermedad as enfermedad_2,
+                e2.detalle as detalle_2,
+                hc.probabilidad_2,
+                e3.enfermedad as enfermedad_3,
+                e3.detalle as detalle_3,
+                hc.probabilidad_3,
+                u.nombre as usuario
+            FROM historia_clinica hc
+            JOIN zona_clinica zc ON hc.zona_clinica_id = zc.id
+            JOIN enfermedad e1 ON hc.enfermedad_id_1 = e1.id
+            JOIN enfermedad e2 ON hc.enfermedad_id_2 = e2.id
+            JOIN enfermedad e3 ON hc.enfermedad_id_3 = e3.id
+            JOIN usuario u ON hc.id_usuario = u.id
+            WHERE hc.paciente_id = %s
+            ORDER BY hc.fecha DESC
+        """, (paciente_id,))
+        
+        history_records = cursor.fetchall()
         
         conn.commit()
         cursor.close()
         conn.close()
+        
+        # Format history
+        history = []
+        for record in history_records:
+            history.append({
+                "id": record['id'],
+                "fecha": record['fecha'].strftime('%Y-%m-%d'),
+                "hora": record['fecha'].strftime('%H:%M'),
+                "edad": record['edad'],
+                "zona_clinica": record['zona_clinica'],
+                "usuario": record['usuario'],
+                "top3": [
+                    {
+                        "enfermedad": record['enfermedad_1'],
+                        "nombre": record['detalle_1'].split(' - ')[0] if ' - ' in record['detalle_1'] else record['detalle_1'],
+                        "probabilidad": float(record['probabilidad_1']),  # Ya está en formato 0-100
+                        "status": "Maligno" if record['enfermedad_1'] in ['MEL', 'BCC'] else "Benigno"
+                    },
+                    {
+                        "enfermedad": record['enfermedad_2'],
+                        "nombre": record['detalle_2'].split(' - ')[0] if ' - ' in record['detalle_2'] else record['detalle_2'],
+                        "probabilidad": float(record['probabilidad_2']),  # Ya está en formato 0-100
+                        "status": "Maligno" if record['enfermedad_2'] in ['MEL', 'BCC'] else "Benigno"
+                    },
+                    {
+                        "enfermedad": record['enfermedad_3'],
+                        "nombre": record['detalle_3'].split(' - ')[0] if ' - ' in record['detalle_3'] else record['detalle_3'],
+                        "probabilidad": float(record['probabilidad_3']),  # Ya está en formato 0-100
+                        "status": "Maligno" if record['enfermedad_3'] in ['MEL', 'BCC'] else "Benigno"
+                    }
+                ]
+            })
         
         logger.info(f"Analysis saved - paciente_id={paciente_id}, historia_id={historia_id}, user_id={id_usuario}")
         
@@ -271,7 +555,8 @@ async def save_analysis(
             "data": {
                 "paciente_id": paciente_id,
                 "historia_clinica_id": historia_id
-            }
+            },
+            "history": history
         })
         
     except Exception as e:

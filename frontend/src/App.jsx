@@ -8,6 +8,7 @@ const Home = lazy(() => import('./pages/Home'))
 const FAQ = lazy(() => import('./pages/FAQ'))
 const Contacto = lazy(() => import('./pages/Contacto'))
 const Analizar = lazy(() => import('./pages/Analizar'))
+const Buscar = lazy(() => import('./pages/Buscar'))
 const Login = lazy(() => import('./pages/Login'))
 
 // Loading fallback component using Tailwind
@@ -32,6 +33,7 @@ function App() {
               <Route path="faq" element={<FAQ />} />
               <Route path="contacto" element={<Contacto />} />
               <Route path="analizar" element={<Analizar />} />
+              <Route path="buscar" element={<Buscar />} />
             </Route>
           </Routes>
         </Suspense>

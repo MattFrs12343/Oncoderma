@@ -7,6 +7,7 @@ const NavBar = ({
   navLinks = [
     { path: '/', label: 'Inicio' },
     { path: '/analizar', label: 'Analizar' },
+    { path: '/buscar', label: 'Buscar' },
     { path: '/faq', label: 'FAQ' },
     { path: '/contacto', label: 'Contacto' },
   ],

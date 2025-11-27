@@ -13,10 +13,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // Credenciales estáticas
-  const STATIC_USERNAME = 'Matias'
-  const STATIC_PASSWORD = '1234'
-
   const handleChange = (e) => {
     setFormData({
       ...formData,

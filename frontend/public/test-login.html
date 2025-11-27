@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login - Diagnóstico</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 10px;
+            display: none;
+            animation: slideIn 0.3s;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            color: #0c5460;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .credentials {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .credentials h3 {
+            color: #0369a1;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .credentials p {
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .log {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 4px 0;
+            border-bottom: 1px solid #334155;
+        }
+        .log-time {
+            color: #94a3b8;
+        }
+        .log-success {
+            color: #10b981;
+        }
+        .log-error {
+            color: #ef4444;
+        }
+        .log-info {
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 Test Login - Diagnóstico</h1>
+        <p class="subtitle">Herramienta de diagnóstico para verificar la conexión con el backend</p>
+        
+        <div class="credentials">
+            <h3>📋 Credenciales de Prueba:</h3>
+            <p><strong>Usuario:</strong> matias</p>
+            <p><strong>Contraseña:</strong> 1234</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Usuario:</label>
+                <input type="text" id="username" name="username" value="matias" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" value="1234" required>
+            </div>
+
+            <button type="submit" id="submitBtn">🚀 Probar Login</button>
+        </form>
+
+        <div id="result" class="result"></div>
+        
+        <div class="log" id="log">
+            <div class="log-entry">
+                <span class="log-time">[Esperando...]</span>
+                <span class="log-info">Listo para probar el login</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const resultDiv = document.getElementById('result');
+        const submitBtn = document.getElementById('submitBtn');
+        const logDiv = document.getElementById('log');
+
+        function addLog(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `
+                <span class="log-time">[${time}]</span>
+                <span class="log-${type}">${message}</span>
+            `;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // Verificar localStorage al cargar
+        window.addEventListener('load', () => {
+            const isAuth = localStorage.getItem('isAuthenticated');
+            const username = localStorage.getItem('username');
+            const userId = localStorage.getItem('userId');
+            
+            if (isAuth) {
+                addLog(`⚠️ Sesión activa detectada: ${username} (ID: ${userId})`, 'info');
+                addLog('💡 Limpia el localStorage si quieres probar un login fresco', 'info');
+            } else {
+                addLog('✅ No hay sesión activa', 'success');
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Probando...';
+            resultDiv.style.display = 'none';
+            
+            addLog(`🔄 Iniciando prueba de login...`, 'info');
+            addLog(`📤 Usuario: ${username}`, 'info');
+
+            try {
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+
+                addLog('📡 Enviando petición a /api/login...', 'info');
+                
+                const startTime = Date.now();
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    body: formData
+                });
+                const endTime = Date.now();
+                const duration = endTime - startTime;
+
+                addLog(`⏱️ Respuesta recibida en ${duration}ms`, 'info');
+                addLog(`📊 Status: ${response.status} ${response.statusText}`, response.ok ? 'success' : 'error');
+
+                const data = await response.json();
+                addLog(`📦 Datos recibidos: ${JSON.stringify(data)}`, 'info');
+
+                resultDiv.style.display = 'block';
+                
+                if (response.ok && data.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <h3>✅ Login Exitoso</h3>
+                        <p><strong>Usuario:</strong> ${data.user.username}</p>
+                        <p><strong>ID:</strong> ${data.user.id}</p>
+                        <p><strong>Mensaje:</strong> ${data.message}</p>
+                        <p><strong>Tiempo:</strong> ${duration}ms</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    
+                    localStorage.setItem('isAuthenticated', 'true');
+                    localStorage.setItem('username', data.user.username);
+                    localStorage.setItem('userId', data.user.id);
+                    
+                    addLog(`💾 Datos guardados en localStorage`, 'success');
+                    addLog(`✅ LOGIN EXITOSO`, 'success');
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <h3>❌ Error de Login</h3>
+                        <p><strong>Status:</strong> ${response.status}</p>
+                        <p><strong>Mensaje:</strong> ${data.message || 'Usuario o contraseña incorrectos'}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    addLog(`❌ LOGIN FALLIDO: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error de Conexión</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p>No se pudo conectar con el servidor.</p>
+                `;
+                addLog(`💥 ERROR DE CONEXIÓN: ${error.message}`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚀 Probar Login';
+            }
+        });
+
+        // Botón para limpiar localStorage
+        const clearBtn = document.createElement('button');
+        clearBtn.textContent = '🗑️ Limpiar Sesión';
+        clearBtn.style.marginTop = '10px';
+        clearBtn.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
+        clearBtn.onclick = () => {
+            localStorage.clear();
+            addLog('🗑️ localStorage limpiado', 'success');
+            addLog('✅ Sesión eliminada', 'success');
+            resultDiv.style.display = 'none';
+        };
+        form.appendChild(clearBtn);
+    </script>
+</body>
+</html>

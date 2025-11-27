@@ -156,7 +156,7 @@ const HistoryCard = ({ item, index, isLatest }) => {
                 lg:hidden
               `}
             >
-              {item.probability}%
+              {item.probability.toFixed(2)}%
             </span>
           </div>
           
@@ -178,7 +178,7 @@ const HistoryCard = ({ item, index, isLatest }) => {
                 }
               `}
             >
-              {item.probability}%
+              {item.probability.toFixed(2)}%
             </span>
           </div>
         </div>
@@ -201,7 +201,10 @@ const HistoryCard = ({ item, index, isLatest }) => {
           {item.top3.map((result, index) => {
             const info = diseaseInfo[result.class]
             const isHighRisk = info.status === 'Maligno'
-            const percentage = (result.prob * 100).toFixed(1)
+            // result.prob ya viene como porcentaje (0-100) desde el backend
+            const percentage = typeof result.prob === 'number' 
+              ? result.prob.toFixed(1)
+              : parseFloat(result.prob).toFixed(1)
 
             return (
               <DonutChart

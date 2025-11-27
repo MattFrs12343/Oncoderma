@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpiar Sesión - OncoDerma</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        .info {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .info h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        .info p {
+            color: #856404;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .storage-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            text-align: left;
+        }
+        .storage-item.bad {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px 0;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 10px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .log {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🗑️</div>
+        <h1>Limpiar Sesión</h1>
+        
+        <div class="info">
+            <h3>⚠️ Sesión Actual Detectada:</h3>
+            <div id="currentStorage"></div>
+        </div>
+
+        <button onclick="limpiarTodo()">🗑️ Limpiar TODO el localStorage</button>
+        <button class="secondary" onclick="irAlLogin()">🔐 Ir al Login</button>
+        
+        <div id="result" class="result"></div>
+        <div class="log" id="log"></div>
+    </div>
+
+    <script>
+        const logDiv = document.getElementById('log');
+        const resultDiv = document.getElementById('result');
+        const storageDiv = document.getElementById('currentStorage');
+
+        function addLog(message) {
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.textContent = `[${time}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function mostrarStorage() {
+            const items = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                items.push({ key, value });
+            }
+
+            if (items.length === 0) {
+                storageDiv.innerHTML = '<p>✅ No hay datos guardados</p>';
+                addLog('✅ localStorage está vacío');
+            } else {
+                storageDiv.innerHTML = items.map(item => {
+                    const isBad = item.key === 'username' && item.value === 'Usuario';
+                    return `<div class="storage-item ${isBad ? 'bad' : ''}">
+                        <strong>${item.key}:</strong> ${item.value}
+                        ${isBad ? ' ⚠️ PROBLEMA DETECTADO' : ''}
+                    </div>`;
+                }).join('');
+                
+                items.forEach(item => {
+                    addLog(`📦 ${item.key}: ${item.value}`);
+                });
+            }
+        }
+
+        function limpiarTodo() {
+            addLog('🗑️ Limpiando localStorage...');
+            
+            const itemsAntes = localStorage.length;
+            localStorage.clear();
+            const itemsDespues = localStorage.length;
+            
+            addLog(`✅ Eliminados ${itemsAntes} items`);
+            addLog(`✅ localStorage ahora tiene ${itemsDespues} items`);
+            
+            resultDiv.className = 'result success';
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <h3>✅ Sesión Limpiada Exitosamente</h3>
+                <p>Se eliminaron ${itemsAntes} items del localStorage</p>
+                <p>Ahora puedes ir al login y hacer login fresco</p>
+            `;
+            
+            mostrarStorage();
+        }
+
+        function irAlLogin() {
+            addLog('🔐 Redirigiendo al login...');
+            window.location.href = '/login';
+        }
+
+        // Mostrar storage al cargar
+        window.addEventListener('load', () => {
+            addLog('🔍 Verificando localStorage...');
+            mostrarStorage();
+            
+            // Verificar si hay problema
+            const username = localStorage.getItem('username');
+            if (username === 'Usuario') {
+                addLog('⚠️ PROBLEMA DETECTADO: username = "Usuario"');
+                addLog('💡 Haz clic en "Limpiar TODO el localStorage"');
+            }
+        });
+    </script>
+</body>
+</html>
